@@ -192,11 +192,11 @@ onMounted(() => {
           <a
             class="link-btn"
             href="/console/account/userdetails"
-            :title="state.user?.firstname + ' ' + state.user?.lastname"
+            :title="`${state.user?.firstname} ${state.user?.lastname}`"
           >
             <UserIcon class="font-bold text-3xl inline-block"></UserIcon>
             <span class="text-xs max-w-[120px] truncate">{{
-              state.user?.firstname + ' ' + state.user?.lastname
+              `${state.user?.firstname} ${state.user?.lastname}`
             }}</span></a
           >
           <a class="link-btn" :href="logoutUrl"
@@ -255,7 +255,7 @@ onMounted(() => {
             <a class="link-btn" href="/console/account/userdetails">
               <UserIcon class="font-bold text-3xl inline-block mr-4"></UserIcon>
               <span>{{
-                state.user?.firstname + ' ' + state.user?.lastname
+                `${state.user?.firstname} ${state.user?.lastname}`
               }}</span></a
             >
             <a class="link-btn" :href="logoutUrl">logout</a>
