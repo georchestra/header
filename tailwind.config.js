@@ -4,10 +4,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#85127e',
-        secondary: '#1b1f3b',
+        primary: 'var(--georchestra-header-primary)',
+        secondary: 'var(--georchestra-header-secondary)',
+        'primary-light': 'var(--georchestra-header-primary-light)',
+        'secondary-light': 'var(--georchestra-header-secondary-light)',
       },
     },
+  },
+  variants: {
+    display: ['group-hover'],
   },
   plugins: [],
 }
