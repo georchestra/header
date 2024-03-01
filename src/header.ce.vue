@@ -70,7 +70,7 @@ onMounted(() => {
       v-bind:style="props.style"
     ></iframe>
   </div>
-  <header v-else class="host h-[80px] text-base">
+  <header v-else class="host h-[130px] text-base">
     <link rel="stylesheet" :href="props.stylesheet" v-if="props.stylesheet" />
     <component :is="'style'" v-if="!props.stylesheet">
       header { --georchestra-header-primary: #85127e;
