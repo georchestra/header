@@ -70,7 +70,7 @@ onMounted(() => {
       v-bind:style="props.style"
     ></iframe>
   </div>
-  <header v-else class="host h-[80px] text-base" v-bind:style="props.style">
+  <header v-else class="host h-[80px] text-base">
     <link rel="stylesheet" :href="props.stylesheet" v-if="props.stylesheet" />
     <component :is="'style'" v-if="!props.stylesheet">
       header { --georchestra-header-primary: #85127e;
@@ -78,7 +78,11 @@ onMounted(() => {
       --georchestra-header-primary-light: #85127e1a;
       --georchestra-header-secondary-light: #1b1f3b1a; }
     </component>
-    <div class="justify-between text-slate-600 sm:flex hidden h-full bg-white">
+
+    <div class="h-[40px] bg-primary" style="height: 40px">
+
+    </div>
+    <div class="justify-between text-slate-600 sm:flex hidden bg-white" v-bind:style="props.style">
       <div class="flex">
         <a
           href="/"
@@ -276,8 +280,8 @@ onMounted(() => {
           <a class="nav-item-mobile" href="/mapstore/#/home">{{ t('maps') }}</a>
           <a class="nav-item-mobile" href="/geoserver/">{{ t('services') }}</a>
           <a v-if="!isAnonymous" class="nav-item-mobile" href="/import/">{{
-            t('datafeeder')
-          }}</a>
+              t('datafeeder')
+            }}</a>
         </nav>
       </div>
     </div>
@@ -305,7 +309,7 @@ onMounted(() => {
     @apply relative text-lg w-fit block after:hover:scale-x-[82%] px-2 mx-2 hover:text-black first-letter:capitalize;
   }
   .nav-item:after {
-    @apply block content-[''] absolute h-[3px] bg-gradient-to-r from-primary to-secondary-light w-full scale-x-0  transition duration-300 origin-left;
+    @apply block content-[''] absolute h-[3px] bg-primary w-full scale-x-[10%]  transition duration-300 origin-left;
   }
   .nav-item.active {
     @apply after:scale-x-[82%] after:bg-primary after:bg-none text-gray-900;
