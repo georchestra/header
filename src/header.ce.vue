@@ -79,10 +79,11 @@ onMounted(() => {
       --georchestra-header-secondary-light: #1b1f3b1a; }
     </component>
 
-    <div class="h-[40px] bg-primary" style="height: 40px">
-
-    </div>
-    <div class="justify-between text-slate-600 sm:flex hidden bg-white" v-bind:style="props.style">
+    <div class="h-[40px] bg-primary"></div>
+    <div
+      class="justify-between text-slate-600 sm:flex hidden bg-white"
+      v-bind:style="props.style"
+    >
       <div class="flex">
         <a
           href="/"
@@ -133,7 +134,9 @@ onMounted(() => {
           >
           <span class="text-gray-400" v-if="isAdmin">|</span>
           <div class="admin group inline-block relative" v-if="isAdmin">
-            <button class="nav-item after:hover:scale-x-0 flex items-center">
+            <button
+              class="nav-item after:scale-x-0 after:hover:scale-x-0 flex items-center"
+            >
               <span class="mr-2 first-letter:capitalize">{{ t('admin') }}</span>
               <ChevronDownIcon
                 class="w-4 h-4"
@@ -280,8 +283,8 @@ onMounted(() => {
           <a class="nav-item-mobile" href="/mapstore/#/home">{{ t('maps') }}</a>
           <a class="nav-item-mobile" href="/geoserver/">{{ t('services') }}</a>
           <a v-if="!isAnonymous" class="nav-item-mobile" href="/import/">{{
-              t('datafeeder')
-            }}</a>
+            t('datafeeder')
+          }}</a>
         </nav>
       </div>
     </div>
