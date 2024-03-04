@@ -120,6 +120,12 @@ onMounted(() => {
           >
           <a
             class="nav-item"
+            :class="{ active: props.activeApp === 'geocontrib' }"
+            href="/geocontrib/"
+          >Contributions</a
+          >
+          <a
+            class="nav-item"
             :class="{ active: props.activeApp === 'geoserver' }"
             href="/geoserver/web/"
             >{{ t('services') }}</a
