@@ -103,7 +103,7 @@ onMounted(() => {
           <a
             class="nav-item"
             :class="{ active: props.activeApp === 'datahub' }"
-            href="/datahub/"
+            href="/plateforme/search"
             >{{ t('catalogue') }}</a
           >
           <a
