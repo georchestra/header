@@ -119,10 +119,11 @@ onMounted(() => {
             >{{ t('maps') }}</a
           >
           <a
+            v-if="!isAnonymous"
             class="nav-item"
             :class="{ active: props.activeApp === 'geocontrib' }"
             href="/geocontrib/"
-          >Contributions</a
+            >Contributions</a
           >
           <a
             class="nav-item"
