@@ -31,8 +31,8 @@ const state = reactive({
 
 const isAnonymous = computed(() => !state.user || state.user.anonymous);
 const isAdmin = computed(() => state.user?.adminRoles?.admin);
-const isWarned = true;
-const remainingDays = 28;
+const isWarned = computed(() => state.user?.warned);
+const remainingDays = computed(() => state.user?.remainingDays);
 const adminRoles = computed(() => state.user?.adminRoles);
 
 const loginUrl = computed(() => {
