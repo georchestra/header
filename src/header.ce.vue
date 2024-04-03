@@ -31,8 +31,8 @@ const state = reactive({
 
 const isAnonymous = computed(() => !state.user || state.user.anonymous);
 const isAdmin = computed(() => state.user?.adminRoles?.admin);
-const isWarned = computed(() => state.user?.warned);
-const remainingDays = computed(() => state.user?.remainingDays);
+const isWarned = true;
+const remainingDays = 28;
 const adminRoles = computed(() => state.user?.adminRoles);
 
 const loginUrl = computed(() => {
@@ -202,9 +202,10 @@ onMounted(() => {
             </ul>
           </div>
           <span class="text-gray-400 text-xs" v-if="isWarned">
-            {{ t("remaining_days_msg_part1") }} {{ remainingDays }}
-            {{ t("remaining_days_msg_part2") }}
-            <a href="console/account/changePassword">{{
+            <a href="/console/account/changePassword">
+              {{ t("remaining_days_msg_part1") }} {{ remainingDays }}
+              {{ t("remaining_days_msg_part2") }}
+              {{
                 t("remaining_days_msg_part3")
               }}</a></span
           >
