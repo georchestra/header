@@ -3,7 +3,7 @@
   "logo": "geOrchestra",
   "catalogue": "catalogue",
   "viewer": "maps",
-  "maps": "reuses",
+  "maps": "DataVisualisations",
   "datafeeder": "import",
   "services": "services",
   "admin": "administration",
