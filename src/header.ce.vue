@@ -127,7 +127,7 @@ onMounted(() => {
             class="nav-item"
             :class="{ active: props.activeApp === 'geocontrib' }"
             href="/geocontrib/"
-            >Contributions</a
+            >{{ t('contributions') }}</a
           >
           <a
             v-if="adminRoles?.import"
