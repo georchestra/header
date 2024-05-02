@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive } from "vue";
-import { getUserDetails, getPlatformInfos } from "./auth";
-import type { User, PlatformInfos } from "./auth";
-import UserIcon from "./ui/UserIcon.vue";
-import GeorchestraLogo from "./ui/GeorchestraLogo.vue";
-import CatalogIcon from "@/ui/CatalogIcon.vue";
-import MapIcon from "@/ui/MapIcon.vue";
-import ChartPieIcon from "@/ui/ChartPieIcon.vue";
-import UsersIcon from "@/ui/UsersIcon.vue";
-import ChevronDownIcon from "@/ui/ChevronDownIcon.vue";
-import { LANG_2_TO_3_MAPPER, t } from "@/i18n";
+import { computed, onMounted, reactive } from 'vue'
+import { getUserDetails, getPlatformInfos } from './auth'
+import type { User, PlatformInfos } from './auth'
+import UserIcon from './ui/UserIcon.vue'
+import GeorchestraLogo from './ui/GeorchestraLogo.vue'
+import CatalogIcon from '@/ui/CatalogIcon.vue'
+import MapIcon from '@/ui/MapIcon.vue'
+import ChartPieIcon from '@/ui/ChartPieIcon.vue'
+import UsersIcon from '@/ui/UsersIcon.vue'
+import ChevronDownIcon from '@/ui/ChevronDownIcon.vue'
+import { LANG_2_TO_3_MAPPER, t } from '@/i18n'
 
 const props = defineProps<{
   lang?: string
@@ -20,45 +20,45 @@ const props = defineProps<{
   legacyUrl?: string
   style?: string
   stylesheet?: string
-}>();
+}>()
 
 const state = reactive({
   user: null as null | User,
   mobileMenuOpen: false,
   lang3: props.lang,
-  platformInfos: null as null | PlatformInfos
-});
+  platformInfos: null as null | PlatformInfos,
+})
 
-const isAnonymous = computed(() => !state.user || state.user.anonymous);
-const isAdmin = computed(() => state.user?.adminRoles?.admin);
-const isWarned = computed(() => state.user?.warned);
-const remainingDays = computed(() => state.user?.remainingDays);
-const adminRoles = computed(() => state.user?.adminRoles);
+const isAnonymous = computed(() => !state.user || state.user.anonymous)
+const isAdmin = computed(() => state.user?.adminRoles?.admin)
+const isWarned = computed(() => state.user?.warned)
+const remainingDays = computed(() => state.user?.remainingDays)
+const adminRoles = computed(() => state.user?.adminRoles)
 
 const loginUrl = computed(() => {
-  const current = new URL(window.location.href);
-  current.searchParams.set("login", "");
-  return current.toString();
-});
-const logoutUrl = computed(() => "/logout");
+  const current = new URL(window.location.href)
+  current.searchParams.set('login', '')
+  return current.toString()
+})
+const logoutUrl = computed(() => '/logout')
 
 function toggleMenu(): void {
-  state.mobileMenuOpen = !state.mobileMenuOpen;
+  state.mobileMenuOpen = !state.mobileMenuOpen
 }
 
 onMounted(() => {
   state.lang3 =
     LANG_2_TO_3_MAPPER[props.lang || navigator.language.substring(0, 2)] ||
-    "eng";
+    'eng'
   getUserDetails().then(user => {
-    state.user = user;
+    state.user = user
     if (user?.adminRoles?.admin) {
       getPlatformInfos().then(
         platformInfos => (state.platformInfos = platformInfos)
-      );
+      )
     }
-  });
-});
+  })
+})
 </script>
 <template>
   <div v-if="props.legacyHeader === 'true'">
@@ -79,7 +79,11 @@ onMounted(() => {
       --georchestra-header-secondary-light: #1b1f3b1a; }
     </component>
 
-    <div class="h-[40px] bg-primary"></div>
+    <div class="h-[40px] bg-primary flex pl-8">
+      <span class="self-center text-white text-lg font-bold">{{
+        t('pre.header.title')
+      }}</span>
+    </div>
     <div
       class="justify-between text-slate-600 sm:flex hidden bg-white h-[90px]"
     >
@@ -104,40 +108,40 @@ onMounted(() => {
             class="nav-item"
             :class="{ active: props.activeApp === 'datahub' }"
             href="/catalogue/search"
-          >{{ t("catalogue") }}</a
+            >{{ t('catalogue') }}</a
           >
           <a
             class="nav-item"
             :class="{ active: props.activeApp === 'mapstore' }"
             href="/mapstore/"
-          >{{ t("viewer") }}</a
+            >{{ t('viewer') }}</a
           >
           <a
             class="nav-item"
             :class="{ active: props.activeApp === 'mapstore-home' }"
             href="/mapstore/#/home"
-          >{{ t("maps") }}</a
+            >{{ t('maps') }}</a
           >
           <a
             v-if="!isAnonymous"
             class="nav-item"
             :class="{ active: props.activeApp === 'geocontrib' }"
             href="/geocontrib/"
-          >Contributions</a
+            >{{ t('contributions') }}</a
           >
           <a
             v-if="adminRoles?.import"
             class="nav-item"
             href="/import/"
             :class="{ active: props.activeApp === 'import' }"
-          >{{ t("datafeeder") }}</a
+            >{{ t('datafeeder') }}</a
           >
           <span class="text-gray-400" v-if="isAdmin">|</span>
           <div class="admin group inline-block relative" v-if="isAdmin">
             <button
               class="nav-item after:scale-x-0 after:hover:scale-x-0 flex items-center"
             >
-              <span class="mr-2 first-letter:capitalize">{{ t("admin") }}</span>
+              <span class="mr-2 first-letter:capitalize">{{ t('admin') }}</span>
               <ChevronDownIcon
                 class="w-4 h-4"
                 stroke-width="4"
@@ -157,13 +161,13 @@ onMounted(() => {
                   "
                 >
                   <CatalogIcon class="icon-dropdown"></CatalogIcon>
-                  {{ t("catalogue") }}</a
+                  {{ t('catalogue') }}</a
                 >
               </li>
               <li :class="{ active: props.activeApp === 'msadmin' }">
                 <a href="/mapstore/#/admin" v-if="adminRoles?.viewer" class="">
                   <MapIcon class="icon-dropdown"></MapIcon>
-                  {{ t("viewer") }}</a
+                  {{ t('viewer') }}</a
                 >
               </li>
               <li :class="{ active: props.activeApp === 'console' }">
@@ -173,7 +177,7 @@ onMounted(() => {
                   class="console"
                 >
                   <UsersIcon class="icon-dropdown"></UsersIcon>
-                  {{ t("users") }}</a
+                  {{ t('users') }}</a
                 >
               </li>
               <li
@@ -186,28 +190,32 @@ onMounted(() => {
                 >
               </li>
               <li :class="{ active: props.activeApp === 'geoserver' }">
-                <a
-                  href="/geoserver/web/"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                       stroke="currentColor" class="icon-dropdown">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="m6.115 5.19.319 1.913A6 6 0 0 0 8.11 10.36L9.75 12l-.387.775c-.217.433-.132.956.21 1.298l1.348 1.348c.21.21.329.497.329.795v1.089c0 .426.24.815.622 1.006l.153.076c.433.217.956.132 1.298-.21l.723-.723a8.7 8.7 0 0 0 2.288-4.042 1.087 1.087 0 0 0-.358-1.099l-1.33-1.108c-.251-.21-.582-.299-.905-.245l-1.17.195a1.125 1.125 0 0 1-.98-.314l-.295-.295a1.125 1.125 0 0 1 0-1.591l.13-.132a1.125 1.125 0 0 1 1.3-.21l.603.302a.809.809 0 0 0 1.086-1.086L14.25 7.5l1.256-.837a4.5 4.5 0 0 0 1.528-1.732l.146-.292M6.115 5.19A9 9 0 1 0 17.18 4.64M6.115 5.19A8.965 8.965 0 0 1 12 3c1.929 0 3.716.607 5.18 1.64" />
+                <a href="/geoserver/web/">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="icon-dropdown"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="m6.115 5.19.319 1.913A6 6 0 0 0 8.11 10.36L9.75 12l-.387.775c-.217.433-.132.956.21 1.298l1.348 1.348c.21.21.329.497.329.795v1.089c0 .426.24.815.622 1.006l.153.076c.433.217.956.132 1.298-.21l.723-.723a8.7 8.7 0 0 0 2.288-4.042 1.087 1.087 0 0 0-.358-1.099l-1.33-1.108c-.251-.21-.582-.299-.905-.245l-1.17.195a1.125 1.125 0 0 1-.98-.314l-.295-.295a1.125 1.125 0 0 1 0-1.591l.13-.132a1.125 1.125 0 0 1 1.3-.21l.603.302a.809.809 0 0 0 1.086-1.086L14.25 7.5l1.256-.837a4.5 4.5 0 0 0 1.528-1.732l.146-.292M6.115 5.19A9 9 0 1 0 17.18 4.64M6.115 5.19A8.965 8.965 0 0 1 12 3c1.929 0 3.716.607 5.18 1.64"
+                    />
                   </svg>
-                  {{ t("services") }}
-                </a
-                >
+                  {{ t('services') }}
+                </a>
               </li>
-
             </ul>
           </div>
           <span class="text-gray-400 text-xs" v-if="isWarned">
             <a href="/console/account/changePassword">
-              {{ t("remaining_days_msg_part1") }} {{ remainingDays }}
-              {{ t("remaining_days_msg_part2") }}
-              {{
-                t("remaining_days_msg_part3")
-              }}</a></span
+              {{ t('remaining_days_msg_part1') }} {{ remainingDays }}
+              {{ t('remaining_days_msg_part2') }}
+              {{ t('remaining_days_msg_part3') }}</a
+            ></span
           >
         </nav>
       </div>
@@ -221,14 +229,14 @@ onMounted(() => {
           >
             <UserIcon class="font-bold text-3xl inline-block"></UserIcon>
             <span class="text-xs max-w-[120px] truncate">{{
-                `${state.user?.firstname} ${state.user?.lastname}`
-              }}</span></a
+              `${state.user?.firstname} ${state.user?.lastname}`
+            }}</span></a
           >
           <a class="link-btn" :href="logoutUrl"
-          ><span class="first-letter:capitalize">{{ t("logout") }}</span></a
+            ><span class="first-letter:capitalize">{{ t('logout') }}</span></a
           >
         </div>
-        <a v-else class="btn" :href="loginUrl">{{ t("login") }}</a>
+        <a v-else class="btn" :href="loginUrl">{{ t('login') }}</a>
       </div>
     </div>
     <div class="flex-col sm:hidden w-full h-full">
@@ -280,8 +288,8 @@ onMounted(() => {
             <a class="link-btn" href="/console/account/userdetails">
               <UserIcon class="font-bold text-3xl inline-block mr-4"></UserIcon>
               <span>{{
-                  `${state.user?.firstname} ${state.user?.lastname}`
-                }}</span></a
+                `${state.user?.firstname} ${state.user?.lastname}`
+              }}</span></a
             >
             <a class="link-btn" :href="logoutUrl">logout</a>
           </div>
@@ -293,13 +301,13 @@ onMounted(() => {
         class="absolute z-[1000] bg-white w-full duration-300 transition-opacity ease-in-out"
       >
         <nav class="flex flex-col font-semibold" v-if="state.mobileMenuOpen">
-          <a class="nav-item-mobile" href="/datahub/">{{ t("catalogue") }}</a>
-          <a class="nav-item-mobile" href="/mapstore/">{{ t("viewer") }}</a>
-          <a class="nav-item-mobile" href="/mapstore/#/home">{{ t("maps") }}</a>
-          <a class="nav-item-mobile" href="/geoserver/">{{ t("services") }}</a>
+          <a class="nav-item-mobile" href="/datahub/">{{ t('catalogue') }}</a>
+          <a class="nav-item-mobile" href="/mapstore/">{{ t('viewer') }}</a>
+          <a class="nav-item-mobile" href="/mapstore/#/home">{{ t('maps') }}</a>
+          <a class="nav-item-mobile" href="/geoserver/">{{ t('services') }}</a>
           <a v-if="!isAnonymous" class="nav-item-mobile" href="/import/">{{
-              t("datafeeder")
-            }}</a>
+            t('datafeeder')
+          }}</a>
         </nav>
       </div>
     </div>
@@ -314,8 +322,8 @@ onMounted(() => {
 .host {
   -webkit-text-size-adjust: 100%;
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-  'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
-  'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+    'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   font-feature-settings: normal;
 }
 
