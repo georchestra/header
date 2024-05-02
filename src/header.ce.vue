@@ -79,7 +79,7 @@ onMounted(() => {
       --georchestra-header-secondary-light: #1b1f3b1a; }
     </component>
 
-    <div class="h-[40px] bg-primary flex justify-center">
+    <div class="h-[40px] bg-primary flex pl-8">
       <span class="self-center text-white text-lg font-bold">{{
         t('pre.header.title')
       }}</span>
