@@ -10,6 +10,7 @@
   "users": "users",
   "logout": "logout",
   "login": "login",
+  "pre.header.title": "The opendata portal of the metropole region",
   "remaining_days_msg_part1": "Only",
   "remaining_days_msg_part2": "days left to",
   "remaining_days_msg_part3": "change your password"
