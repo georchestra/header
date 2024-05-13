@@ -76,7 +76,8 @@ onMounted(() => {
       header { --georchestra-header-primary: #85127e;
       --georchestra-header-secondary: #1b1f3b;
       --georchestra-header-primary-light: #85127e1a;
-      --georchestra-header-secondary-light: #1b1f3b1a; }
+      --georchestra-header-secondary-light: #1b1f3b1a;
+      --georchestra-header-primary-dark: #AB0107; }
     </component>
 
     <div class="h-[40px] bg-primary flex pl-8 justify-center">
@@ -223,7 +224,7 @@ onMounted(() => {
       <div class="flex justify-center items-center mx-6">
         <div v-if="!isAnonymous" class="flex gap-4 items-baseline">
           <a
-            class="link-btn"
+            class="link-btn hover:text-primary-dark"
             href="/console/account/userdetails"
             :title="`${state.user?.firstname} ${state.user?.lastname}`"
           >
@@ -232,11 +233,15 @@ onMounted(() => {
               `${state.user?.firstname} ${state.user?.lastname}`
             }}</span></a
           >
-          <a class="link-btn" :href="logoutUrl"
+          <a
+            class="link-btn hover:text-primary-dark hover:decoration-primary-dark"
+            :href="logoutUrl"
             ><span class="first-letter:capitalize">{{ t('logout') }}</span></a
           >
         </div>
-        <a v-else class="btn" :href="loginUrl">{{ t('login') }}</a>
+        <a v-else class="btn hover:bg-primary-dark" :href="loginUrl">{{
+          t('login')
+        }}</a>
       </div>
     </div>
     <div class="flex-col sm:hidden w-full h-full">
