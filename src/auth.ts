@@ -43,7 +43,6 @@ export async function getUserDetails(): Promise<User> {
       "roles": [
         "ROLE_MAPSTORE_ADMIN",
         "ROLE_DSP_ILEVIA",
-        "ROLE_GN_EDITOR",
         "ROLE_USER",
         "ROLE_ADMINISTRATOR",
         "ROLE_SUPERUSER"

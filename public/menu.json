@@ -1,0 +1,30 @@
+{
+  "config": {
+
+  },
+  "menu": [
+    {
+      "label": "Catalogue",
+      "i18n": "catalogue",
+      "url": "/datahub/",
+      "active-app" : "datahub"
+    },
+    {
+      "label": "My other service",
+      "url": "/geoserver/web",
+      "active-app" : "geoserver"
+    },
+    {
+      "type": "dropdown",
+      "label": "A dropdown",
+      "items": [
+        {
+          "label": "Console",
+          "i18n": "users",
+          "url": "/console/manager/home",
+          "active-app": "console"
+        }
+      ]
+    }
+  ]
+}

@@ -4,13 +4,9 @@ import { getUserDetails, getPlatformInfos } from './auth'
 import type { User, PlatformInfos } from './auth'
 import UserIcon from './ui/UserIcon.vue'
 import GeorchestraLogo from './ui/GeorchestraLogo.vue'
-import CatalogIcon from '@/ui/CatalogIcon.vue'
-import MapIcon from '@/ui/MapIcon.vue'
-import ChartPieIcon from '@/ui/ChartPieIcon.vue'
-import UsersIcon from '@/ui/UsersIcon.vue'
 import ChevronDownIcon from '@/ui/ChevronDownIcon.vue'
 import { LANG_2_TO_3_MAPPER, t } from '@/i18n'
-import menu from '@/menu.json'
+import { defaultMenu } from '@/menu.json'
 
 const props = defineProps<{
   hideLogin?: string
@@ -22,6 +18,7 @@ const props = defineProps<{
   legacyUrl?: string
   style?: string
   stylesheet?: string
+  menuFile?: string
 }>()
 
 const state = reactive({
@@ -29,14 +26,12 @@ const state = reactive({
   mobileMenuOpen: false,
   lang3: props.lang,
   platformInfos: null as null | PlatformInfos,
+  menu: defaultMenu,
 })
 
 const isAnonymous = computed(() => !state.user || state.user.anonymous)
-const isAdmin = computed(() => state.user?.adminRoles?.admin)
 const isWarned = computed(() => state.user?.warned)
 const remainingDays = computed(() => state.user?.remainingDays)
-const adminRoles = computed(() => state.user?.adminRoles)
-const cond = computed(condition => state.user?.roles?.[condition])
 
 const loginUrl = computed(() => {
   const current = new URL(window.location.href)
@@ -49,13 +44,28 @@ function toggleMenu(): void {
   state.mobileMenuOpen = !state.mobileMenuOpen
 }
 
-function checkCondition(condition: string): boolean {
+function checkCondition(item: object): boolean {
+  const hasRole = item.hasRole
   if (!state.user) return false
-  if (!condition) return true
-  return condition.split(',').some(c => state.user?.roles?.indexOf(c) !== -1)
+  if (!hasRole) return true
+  const isBlocked = item.blockedRole
+    ?.split(',')
+    .some(c => state.user?.roles?.indexOf(c) !== -1)
+  if (isBlocked) return false
+  return hasRole.split(',').some(c => state.user?.roles?.indexOf(c) !== -1)
+}
+
+function computeUrl(url: string): string {
+  return url.replace(/:lang3/, state.lang3)
 }
 
 onMounted(() => {
+  if (props.menuFile)
+    fetch(props.menuFile)
+      .then(res => res.json())
+      .then(file => {
+        state.menu = file.menu
+      })
   state.lang3 =
     LANG_2_TO_3_MAPPER[props.lang || navigator.language.substring(0, 2)] ||
     'eng'
@@ -89,10 +99,7 @@ onMounted(() => {
     </component>
     <div class="justify-between text-slate-600 sm:flex hidden h-full bg-white">
       <div class="flex">
-        <a
-          href="/"
-          class="flex justify-center items-center px-8 rounded-r-lg py-2 bg-primary-light"
-        >
+        <a href="/" class="flex justify-center items-center px-8 py-2">
           <img
             v-if="props.logoUrl"
             :src="props.logoUrl"
@@ -105,8 +112,8 @@ onMounted(() => {
           ></GeorchestraLogo>
         </a>
         <nav class="flex justify-center items-center font-semibold">
-          <template v-for="(item, index) in menu.menu" :key="index">
-            <template v-if="!item.type && checkCondition(item.condition)">
+          <template v-for="(item, index) in state.menu" :key="index">
+            <template v-if="!item.type && checkCondition(item)">
               <a
                 :href="item.url"
                 class="nav-item"
@@ -115,16 +122,12 @@ onMounted(() => {
               >
             </template>
             <template
-              v-else-if="
-                item.type === 'separator' && checkCondition(item.condition)
-              "
+              v-else-if="item.type === 'separator' && checkCondition(item)"
             >
               <span class="text-gray-400">|</span>
             </template>
             <template
-              v-else-if="
-                item.type === 'dropdown' && checkCondition(item.condition)
-              "
+              v-else-if="item.type === 'dropdown' && checkCondition(item)"
             >
               <div class="group inline-block relative">
                 <button
@@ -143,12 +146,12 @@ onMounted(() => {
                 >
                   <template v-for="subitem in item.items">
                     <li
-                      v-if="checkCondition(subitem.condition)"
+                      v-if="checkCondition(subitem)"
                       :class="{
                         active: props.activeApp === subitem['active-app'],
                       }"
                     >
-                      <a :href="subitem.url" class="capitalize">
+                      <a :href="computeUrl(subitem.url)" class="capitalize">
                         {{ subitem.i18n ? t(subitem.i18n) : subitem.label }}</a
                       >
                     </li>
@@ -288,7 +291,7 @@ onMounted(() => {
     @apply relative text-lg w-fit block after:hover:scale-x-[82%] px-2 mx-2 hover:text-black first-letter:capitalize;
   }
   .nav-item:after {
-    @apply block content-[''] absolute h-[3px] bg-gradient-to-r from-primary to-secondary-light w-full scale-x-0  transition duration-300 origin-left;
+    @apply block content-[''] absolute h-[3px] bg-primary w-full scale-x-0  transition duration-300 origin-left;
   }
   .nav-item.active {
     @apply after:scale-x-[82%] after:bg-primary after:bg-none text-gray-900;
