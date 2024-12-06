@@ -3,46 +3,37 @@ import { computed, onMounted, reactive } from 'vue'
 import { getUserDetails, getPlatformInfos } from './auth'
 import type { User, PlatformInfos } from './auth'
 import UserIcon from './ui/UserIcon.vue'
-import GeorchestraLogo from './ui/GeorchestraLogo.vue'
+import GeorchestraLogo from '@/ui/GeorchestraLogo.vue'
 import ChevronDownIcon from '@/ui/ChevronDownIcon.vue'
-import { LANG_2_TO_3_MAPPER, t } from '@/i18n'
-import { defaultMenu } from '@/menu.json'
+import { getI18n, i18n } from '@/i18n'
+import { defaultMenu, defaultConfig } from '@/config.json'
 
 const props = defineProps<{
-  hideLogin?: string
-  lang?: string
   activeApp?: string
-  logoUrl?: string
-  //legacy option : using old iframe option
-  legacyHeader?: string
-  legacyUrl?: string
-  style?: string
+  configFile?: string
   stylesheet?: string
-  menuFile?: string
 }>()
 
 const state = reactive({
   user: null as null | User,
   mobileMenuOpen: false,
-  lang3: props.lang,
   platformInfos: null as null | PlatformInfos,
   menu: defaultMenu,
+  config: defaultConfig,
+  lang3: defaultConfig.lang,
+  legacyHeader: false,
+  loaded: false,
 })
 
 const isAnonymous = computed(() => !state.user || state.user.anonymous)
 const isWarned = computed(() => state.user?.warned)
 const remainingDays = computed(() => state.user?.remainingDays)
-
 const loginUrl = computed(() => {
   const current = new URL(window.location.href)
   current.searchParams.set('login', '')
   return current.toString()
 })
 const logoutUrl = computed(() => '/logout')
-
-function toggleMenu(): void {
-  state.mobileMenuOpen = !state.mobileMenuOpen
-}
 
 function checkCondition(item: object): boolean {
   const hasRole = item.hasRole
@@ -58,58 +49,87 @@ function checkCondition(item: object): boolean {
 function computeUrl(url: string): string {
   return url.replace(/:lang3/, state.lang3)
 }
+function t(msg: string) {
+  return i18n.global.t(msg)
+}
+
+function setI18n(externalI18n: object): void {
+  state.lang3 = getI18n(
+    externalI18n,
+    state.config.lang || navigator.language.substring(0, 2) || 'en'
+  )
+  state.loaded = true
+}
 
 onMounted(() => {
-  if (props.menuFile)
-    fetch(props.menuFile)
-      .then(res => res.json())
-      .then(file => {
-        state.menu = file.menu
-      })
-  state.lang3 =
-    LANG_2_TO_3_MAPPER[props.lang || navigator.language.substring(0, 2)] ||
-    'eng'
-  getUserDetails().then(user => {
-    state.user = user
-    if (user?.adminRoles?.admin) {
-      getPlatformInfos().then(
-        platformInfos => (state.platformInfos = platformInfos)
-      )
-    }
-  })
+  getUserDetails()
+    .then(user => {
+      state.user = user
+      if (user?.adminRoles?.admin) {
+        getPlatformInfos().then(
+          platformInfos => (state.platformInfos = platformInfos)
+        )
+      }
+    })
+    .then(() => {
+      if (props.configFile)
+        fetch(props.configFile)
+          .then(res => res.json())
+          .then(json => {
+            console.log(json)
+            state.config = json.config
+            if (json.menu) {
+              state.menu = json.menu
+            }
+            setI18n(json.i18n)
+          })
+      else setI18n({})
+    })
 })
 </script>
 <template>
-  <div v-if="props.legacyHeader === 'true'">
+  <div v-if="state.config.legacyHeader && state.loaded">
     <iframe
       class="w-full"
-      v-bind:src="`${props.legacyUrl}${
+      v-bind:src="`${state.config.legacyUrl}${
         props.activeApp ? `?active=${props.activeApp}` : ''
       }`"
-      v-bind:style="props.style"
+      v-bind:style="state.config.style"
     ></iframe>
   </div>
-  <header v-else class="host h-[80px] text-base" v-bind:style="props.style">
-    <link rel="stylesheet" :href="props.stylesheet" v-if="props.stylesheet" />
-    <component :is="'style'" v-if="!props.stylesheet">
+  <header
+    v-else-if="state.loaded"
+    class="host h-[80px] text-base"
+    v-bind:style="state.config.style"
+  >
+    <link
+      rel="stylesheet"
+      :href="props.stylesheet || state.config.stylesheet"
+      v-if="props.stylesheet || state.config.stylesheet"
+    />
+    <component :is="'style'" v-if="!state.config.stylesheet">
       header { --georchestra-header-primary: #85127e;
       --georchestra-header-secondary: #1b1f3b;
       --georchestra-header-primary-light: #85127e1a;
       --georchestra-header-secondary-light: #1b1f3b1a; }
     </component>
-    <div class="justify-between text-slate-600 sm:flex hidden h-full bg-white">
+    <div
+      class="justify-between text-slate-600 md:flex hidden h-full bg-white md:text-sm"
+    >
       <div class="flex">
-        <a href="/" class="flex justify-center items-center px-8 py-2">
+        <a
+          href="/"
+          class="flex justify-center items-center lg:px-3 md:px-2 py-2"
+        >
           <img
-            v-if="props.logoUrl"
-            :src="props.logoUrl"
+            v-if="state.config.logoUrl"
+            :src="state.config.logoUrl"
             alt="geOrchestra logo"
             class="w-32"
           />
-          <GeorchestraLogo
-            v-else
-            class="w-full h-12 my-auto block"
-          ></GeorchestraLogo>
+          <template v-else>
+            <GeorchestraLogo class="w-full h-12 my-auto"></GeorchestraLogo>
+          </template>
         </a>
         <nav class="flex justify-center items-center font-semibold">
           <template v-for="(item, index) in state.menu" :key="index">
@@ -133,7 +153,7 @@ onMounted(() => {
                 <button
                   class="nav-item after:hover:scale-x-0 flex items-center"
                 >
-                  <span class="mr-2 first-letter:capitalize">{{
+                  <span class="lg:mr-2 md:mr-1 first-letter:capitalize">{{
                     item.i18n ? t(item.i18n) : item.label
                   }}</span>
                   <ChevronDownIcon
@@ -188,20 +208,23 @@ onMounted(() => {
           >
         </div>
         <a
-          v-if="props.hideLogin !== 'true' && isAnonymous"
+          v-if="!state.config.hideLogin && isAnonymous"
           class="btn"
           :href="loginUrl"
           >{{ t('login') }}</a
         >
       </div>
     </div>
-    <div class="flex-col sm:hidden w-full h-full">
+    <div class="flex-col md:hidden w-full h-full">
       <div
         class="h-full inline-flex items-center justify-start align-middle px-6 py-8 shrink-0 w-full bg-primary/10"
       >
         <div class="grow flex justify-start items-center py-3">
           <span class="inline-flex items-center rounded-full">
-            <button type="button" @click="toggleMenu">
+            <button
+              type="button"
+              @click="state.mobileMenuOpen = !state.mobileMenuOpen"
+            >
               <svg
                 v-if="state.mobileMenuOpen"
                 xmlns="http://www.w3.org/2000/svg"
@@ -225,17 +248,14 @@ onMounted(() => {
                 />
               </svg>
             </button>
-            <a href="/">
+            <a href="/" class="block ml-3">
               <img
-                v-if="props.logoUrl"
-                :src="props.logoUrl"
+                v-if="state.config.logoUrl"
+                :src="state.config.logoUrl"
                 alt="geOrchestra logo"
-                class="w-24 ml-4"
+                class="w-24"
               />
-              <GeorchestraLogo
-                v-else
-                class="w-full h-12 ml-4"
-              ></GeorchestraLogo>
+              <GeorchestraLogo v-else></GeorchestraLogo>
             </a>
           </span>
         </div>
@@ -247,9 +267,9 @@ onMounted(() => {
                 `${state.user?.firstname} ${state.user?.lastname}`
               }}</span></a
             >
-            <a class="link-btn" :href="logoutUrl">logout</a>
+            <a class="link-btn" :href="logoutUrl">{{ t('logout') }}</a>
           </div>
-          <a v-else class="btn" :href="loginUrl">login</a>
+          <a v-else class="btn" :href="loginUrl">{{ t('login') }}</a>
         </div>
       </div>
 
@@ -288,13 +308,13 @@ onMounted(() => {
     @apply text-xl block text-center py-3 w-full border-b border-b-slate-300 first-letter:capitalize;
   }
   .nav-item {
-    @apply relative text-lg w-fit block after:hover:scale-x-[82%] px-2 mx-2 hover:text-black first-letter:capitalize;
+    @apply relative text-lg w-fit block after:hover:scale-x-100 lg:mx-3 md:mx-2 hover:text-black first-letter:capitalize text-base;
   }
   .nav-item:after {
     @apply block content-[''] absolute h-[3px] bg-primary w-full scale-x-0  transition duration-300 origin-left;
   }
   .nav-item.active {
-    @apply after:scale-x-[82%] after:bg-primary after:bg-none text-gray-900;
+    @apply after:scale-x-100 after:bg-primary after:bg-none text-gray-900;
   }
   .btn {
     @apply px-4 py-2 mx-2 text-slate-100 bg-primary rounded hover:bg-slate-700 transition-colors first-letter:capitalize;

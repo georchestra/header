@@ -1,11 +1,16 @@
 {
   "config": {
-
+    "legacyHeader": "false",
+    "legacyUrl": "/header",
+    "stylesheet": "https://data.lillemetropole.fr/public/georchestra.css",
+    "logoUrl": "https://data.lillemetropole.fr/public/logo-mel.jpg",
+    "hideLogin": false,
+    "lang": "es"
   },
   "menu": [
     {
       "label": "Catalogue",
-      "i18n": "catalogue",
+      "i18n": "hello",
       "url": "/datahub/",
       "active-app" : "datahub"
     },
@@ -26,5 +31,13 @@
         }
       ]
     }
-  ]
+  ],
+  "i18n": {
+    "en": {
+      "hello": "Hello"
+    },
+    "fr": {
+      "hello": "Bonjour"
+    }
+  }
 }

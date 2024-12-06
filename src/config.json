@@ -1,4 +1,10 @@
 {
+  "defaultConfig": {
+    "legacyHeader": false,
+    "legacyUrl": "/header/",
+    "hideLogin": false,
+    "style": ""
+  },
   "defaultMenu": [
       {
         "label": "Catalogue",
