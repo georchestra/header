@@ -37,36 +37,8 @@ export interface User {
 }
 
 export async function getUserDetails(): Promise<User> {
-  const jsonFake = {
-    "GeorchestraUser": {
-      "username": "jdoe",
-      "roles": [
-        "ROLE_MAPSTORE_ADMIN",
-        "ROLE_DSP_ILEVIA",
-        "ROLE_USER",
-        "ROLE_ADMINISTRATOR",
-        "ROLE_SUPERUSER"
-      ],
-      "organization": "georchestra",
-      "id": "961b3749-d5c13b2df7",
-      "lastUpdated": "37ad990ece9c0b0e6d42b52fdce45849292cd9468",
-      "firstName": "John",
-      "lastName": "Doe",
-      "email": "john.doe@yopmail.com",
-      "postalAddress": null,
-      "telephoneNumber": null,
-      "title": null,
-      "notes": null,
-      "ldapWarn": false,
-      "ldapRemainingDays": null,
-      "isExternalAuth": false,
-      "oauth2Provider": null,
-      "oauth2Uid": null
-    }
-  }
-
   return fetch(AUTH_API_URL)
-    .then(response => jsonFake)
+    .then(response => response.json())
     .then((json: WhoAmIResponse) => {
       const user = json.GeorchestraUser
       if (!user) {

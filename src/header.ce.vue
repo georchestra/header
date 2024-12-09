@@ -60,6 +60,22 @@ function setI18n(externalI18n: object): void {
   )
   state.loaded = true
 }
+function activeAppUrl(activeAppUrl: string): boolean {
+  if (!activeAppUrl) return false
+  const splitted = activeAppUrl.split(':')
+  const base = splitted.length > 1 ? splitted[0] : 'start'
+  const url = computeUrl(splitted.length > 1 ? splitted[1] : splitted[0])
+  switch (base) {
+    case 'end':
+      return window.location.pathname.endsWith(url)
+    case 'includes':
+      return window.location.pathname.includes(url)
+    case 'exact':
+      return window.location.pathname === url
+    default:
+      return window.location.pathname.startsWith(url)
+  }
+}
 
 onMounted(() => {
   getUserDetails()
@@ -76,7 +92,6 @@ onMounted(() => {
         fetch(props.configFile)
           .then(res => res.json())
           .then(json => {
-            console.log(json)
             state.config = json.config
             if (json.menu) {
               state.menu = json.menu
@@ -137,7 +152,11 @@ onMounted(() => {
               <a
                 :href="item.url"
                 class="nav-item"
-                :class="{ active: props.activeApp === item['active-app'] }"
+                :class="{
+                  active:
+                    props.activeApp === item['active-app'] ||
+                    activeAppUrl(item['active-app-url']),
+                }"
                 >{{ item.i18n ? t(item.i18n) : item.label }}</a
               >
             </template>
@@ -168,7 +187,9 @@ onMounted(() => {
                     <li
                       v-if="checkCondition(subitem)"
                       :class="{
-                        active: props.activeApp === subitem['active-app'],
+                        active:
+                          props.activeApp === subitem['active-app'] ||
+                          activeAppUrl(subitem['active-app-url']),
                       }"
                     >
                       <a :href="computeUrl(subitem.url)" class="capitalize">

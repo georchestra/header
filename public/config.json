@@ -1,6 +1,6 @@
 {
   "config": {
-    "legacyHeader": "false",
+    "legacyHeader": false,
     "legacyUrl": "/header",
     "stylesheet": "https://data.lillemetropole.fr/public/georchestra.css",
     "logoUrl": "https://data.lillemetropole.fr/public/logo-mel.jpg",
@@ -17,7 +17,7 @@
     {
       "label": "My other service",
       "url": "/geoserver/web",
-      "active-app" : "geoserver"
+      "active-app-url": "start:/geoserver"
     },
     {
       "type": "dropdown",
@@ -27,7 +27,7 @@
           "label": "Console",
           "i18n": "users",
           "url": "/console/manager/home",
-          "active-app": "console"
+          "active-app-url": "/console"
         }
       ]
     }
