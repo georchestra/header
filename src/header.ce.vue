@@ -6,6 +6,7 @@ import UserIcon from './ui/UserIcon.vue'
 import GeorchestraLogo from '@/ui/GeorchestraLogo.vue'
 import ChevronDownIcon from '@/ui/ChevronDownIcon.vue'
 import { getI18n, i18n } from '@/i18n'
+import type { Link, Separator, Dropdown, Config } from '@/config-interfaces'
 import { defaultMenu, defaultConfig } from '@/config.json'
 
 const props = defineProps<{
@@ -18,11 +19,12 @@ const state = reactive({
   user: null as null | User,
   mobileMenuOpen: false,
   platformInfos: null as null | PlatformInfos,
-  menu: defaultMenu,
-  config: defaultConfig,
-  lang3: defaultConfig.lang,
+  menu: defaultMenu as (Link | Separator | Dropdown)[],
+  config: defaultConfig as Config,
+  lang3: 'eng',
   legacyHeader: false,
   loaded: false,
+  matchedRouteScore: 0,
 })
 
 const isAnonymous = computed(() => !state.user || state.user.anonymous)
@@ -35,7 +37,7 @@ const loginUrl = computed(() => {
 })
 const logoutUrl = computed(() => '/logout')
 
-function checkCondition(item: object): boolean {
+function checkCondition(item: Link | Separator | Dropdown): boolean {
   const hasRole = item.hasRole
   if (!state.user) return false
   if (!hasRole) return true
@@ -49,7 +51,8 @@ function checkCondition(item: object): boolean {
 function computeUrl(url: string): string {
   return url.replace(/:lang3/, state.lang3)
 }
-function t(msg: string) {
+
+function t(msg?: string) {
   return i18n.global.t(msg)
 }
 
@@ -60,46 +63,58 @@ function setI18n(externalI18n: object): void {
   )
   state.loaded = true
 }
-function activeAppUrl(activeAppUrl: string): boolean {
-  if (!activeAppUrl) return false
-  const splitted = activeAppUrl.split(':')
+
+function activeApp(link: Link): boolean {
+  if (!link.activeAppUrl) return link.activeApp === props.activeApp
+  const splitted = link.activeAppUrl.split(':')
   const base = splitted.length > 1 ? splitted[0] : 'start'
   const url = computeUrl(splitted.length > 1 ? splitted[1] : splitted[0])
+  const computedUrl = window.location.href.substring(
+    window.location.origin.length,
+    window.location.href.length
+  )
+  let matched = false
   switch (base) {
     case 'end':
-      return window.location.pathname.endsWith(url)
+      matched = computedUrl.endsWith(url)
+      break
     case 'includes':
-      return window.location.pathname.includes(url)
+      matched = computedUrl.includes(url)
+      break
     case 'exact':
-      return window.location.pathname === url
+      matched = computedUrl === url
+      break
     default:
-      return window.location.pathname.startsWith(url)
+      matched = computedUrl.startsWith(url)
+      break
   }
+  state.matchedRouteScore =
+    matched && link.activeAppUrl.length > state.matchedRouteScore
+      ? link.activeAppUrl.length
+      : state.matchedRouteScore
+  return matched && state.matchedRouteScore === link.activeAppUrl?.length
 }
 
 onMounted(() => {
-  getUserDetails()
-    .then(user => {
-      state.user = user
-      if (user?.adminRoles?.admin) {
-        getPlatformInfos().then(
-          platformInfos => (state.platformInfos = platformInfos)
-        )
-      }
-    })
-    .then(() => {
-      if (props.configFile)
-        fetch(props.configFile)
-          .then(res => res.json())
-          .then(json => {
-            state.config = json.config
-            if (json.menu) {
-              state.menu = json.menu
-            }
-            setI18n(json.i18n)
-          })
-      else setI18n({})
-    })
+  getUserDetails().then(user => {
+    if (props.configFile)
+      fetch(props.configFile)
+        .then(res => res.json())
+        .then(json => {
+          state.config = json.config
+          if (json.menu) {
+            state.menu = json.menu
+          }
+          setI18n(json.i18n)
+        })
+    else setI18n({})
+    state.user = user
+    if (user.roles.some(role => state.config.adminRoles.includes(role))) {
+      getPlatformInfos().then(
+        platformInfos => (state.platformInfos = platformInfos)
+      )
+    }
+  })
 })
 </script>
 <template>
@@ -150,18 +165,21 @@ onMounted(() => {
           <template v-for="(item, index) in state.menu" :key="index">
             <template v-if="!item.type && checkCondition(item)">
               <a
-                :href="item.url"
+                :href="(item as Link).url"
                 class="nav-item"
                 :class="{
                   active:
-                    props.activeApp === item['active-app'] ||
-                    activeAppUrl(item['active-app-url']),
+                    activeApp((item as Link)) ,
                 }"
-                >{{ item.i18n ? t(item.i18n) : item.label }}</a
+                >{{
+                  (item as Link).i18n
+                    ? t((item as Link).i18n)
+                    : (item as Link).label
+                }}</a
               >
             </template>
             <template
-              v-else-if="item.type === 'separator' && checkCondition(item)"
+              v-else-if="(item as Separator).type === 'separator' && checkCondition(item)"
             >
               <span class="text-gray-400">|</span>
             </template>
@@ -173,7 +191,9 @@ onMounted(() => {
                   class="nav-item after:hover:scale-x-0 flex items-center"
                 >
                   <span class="lg:mr-2 md:mr-1 first-letter:capitalize">{{
-                    item.i18n ? t(item.i18n) : item.label
+                    (item as Dropdown).i18n
+                      ? t((item as Dropdown).i18n)
+                      : (item as Dropdown).label
                   }}</span>
                   <ChevronDownIcon
                     class="w-4 h-4"
@@ -183,13 +203,12 @@ onMounted(() => {
                 <ul
                   class="absolute hidden group-hover:block border rounded w-full admin-dropdown z-[1002] bg-white"
                 >
-                  <template v-for="subitem in item.items">
+                  <template v-for="subitem in (item as Dropdown).items">
                     <li
                       v-if="checkCondition(subitem)"
                       :class="{
                         active:
-                          props.activeApp === subitem['active-app'] ||
-                          activeAppUrl(subitem['active-app-url']),
+                          activeApp((subitem as Link)),
                       }"
                     >
                       <a :href="computeUrl(subitem.url)" class="capitalize">
@@ -328,33 +347,43 @@ onMounted(() => {
   .nav-item-mobile {
     @apply text-xl block text-center py-3 w-full border-b border-b-slate-300 first-letter:capitalize;
   }
+
   .nav-item {
     @apply relative text-lg w-fit block after:hover:scale-x-100 lg:mx-3 md:mx-2 hover:text-black first-letter:capitalize text-base;
   }
+
   .nav-item:after {
     @apply block content-[''] absolute h-[3px] bg-primary w-full scale-x-0  transition duration-300 origin-left;
   }
+
   .nav-item.active {
     @apply after:scale-x-100 after:bg-primary after:bg-none text-gray-900;
   }
+
   .btn {
     @apply px-4 py-2 mx-2 text-slate-100 bg-primary rounded hover:bg-slate-700 transition-colors first-letter:capitalize;
   }
+
   .link-btn {
     @apply text-primary hover:text-slate-700 hover:underline underline-offset-8 decoration-2 decoration-slate-700 flex flex-col items-center;
   }
+
   .admin-dropdown > li {
     @apply block text-center hover:bg-primary-light text-gray-700 hover:text-black capitalize;
   }
+
   .admin-dropdown > li > a {
     @apply block w-full h-full py-3;
   }
+
   .admin-dropdown > li.active {
     @apply bg-primary-light;
   }
+
   .icon-dropdown {
     @apply w-4 h-4 inline-block align-text-top;
   }
+
   * {
     -webkit-tap-highlight-color: transparent;
   }

@@ -3,38 +3,46 @@
     "legacyHeader": false,
     "legacyUrl": "/header/",
     "hideLogin": false,
-    "style": ""
+    "style": "",
+    "adminRoles": [
+        "ROLE_SUPERUSER",
+        "ROLE_ORGADMIN",
+        "ROLE_GN_ADMIN",
+        "ROLE_GN_REVIEWER",
+        "ROLE_GN_EDITOR",
+        "ROLE_MAPSTORE_ADMIN"
+    ]
   },
   "defaultMenu": [
       {
         "label": "Catalogue",
         "i18n": "catalogue",
         "url": "/datahub/",
-        "active-app": "datahub"
+        "activeApp": "datahub"
       },
       {
         "label": "Mapstore viewer",
         "i18n": "viewer",
         "url": "/mapstore",
-        "active-app": "mapstore"
+        "activeApp": "mapstore"
       },
       {
         "label": "Maps",
         "i18n": "maps",
         "url": "/mapstore/#/home",
-        "active-app": "mapstore-home"
+        "activeApp": "mapstore-home"
       },
       {
         "label": "Services",
         "i18n": "services",
         "url": "/geoserver/web",
-        "active-app": "geoserver"
+        "activeApp": "geoserver"
       },
       {
         "label": "Datafeeder",
         "i18n": "datafeeder",
         "url": "/datafeeder",
-        "active-app": "datafeeder",
+        "activeApp": "datafeeder",
         "hasRole": "ROLE_SUPERUSER,ROLE_IMPORT"
       },
       {
@@ -51,7 +59,7 @@
             "label": "Geonetwork",
             "i18n": "catalogue",
             "url": "/geonetwork/srv/:lang3/admin.console",
-            "active-app": "geonetwork",
+            "activeApp": "geonetwork",
             "hasRole": "ROLE_SUPERUSER,ROLE_GN_EDITOR,ROLE_GN_ADMIN",
             "blockedRole": "ROLE_GN_EDITOR,ROLE_SUPERUSER"
           },
@@ -59,7 +67,7 @@
             "label": "Geonetwork",
             "i18n": "catalogue",
             "url": "/geonetwork/srv/:lang3/catalog.edit#/board",
-            "active-app": "geonetwork",
+            "activeApp": "geonetwork",
             "hasRole": "ROLE_SUPERUSER,ROLE_GN_EDITOR,ROLE_GN_ADMIN",
             "blockedRole": "ROLE_GN_REVIEWER"
           },
@@ -67,14 +75,14 @@
             "label": "Viewer",
             "i18n": "viewer",
             "url": "/mapstore/#/admin",
-            "active-app": "msadmin",
+            "activeApp": "msadmin",
             "hasRole": "ROLE_SUPERUSER,ROLE_MAPSTORE_ADMIN"
           },
           {
             "label": "Console",
             "i18n": "users",
             "url": "/console/manager/home",
-            "active-app": "console",
+            "activeApp": "console",
             "hasRole": "ROLE_SUPERUSER"
           }
         ]

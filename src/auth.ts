@@ -1,19 +1,6 @@
 const AUTH_API_URL = '/whoami'
 const CONSOLE_PLATFORM_API_URL = '/console/private/platform/infos'
 
-type KNOWN_ROLES =
-  | 'ROLE_SUPERUSER'
-  | 'ROLE_ORGADMIN'
-  | 'ROLE_MAPSTORE_ADMIN'
-  | 'ROLE_USER'
-  | 'ROLE_ADMINISTRATOR'
-  | 'ROLE_EXTRACTORAPP'
-  | 'ROLE_GN_REVIEWER'
-  | 'ROLE_GN_EDITOR'
-  | 'ROLE_GN_ADMIN'
-  | 'ROLE_EMAILPROXY'
-  | 'ROLE_ANONYMOUS'
-  | 'ROLE_IMPORT'
 
 interface WhoAmIResponse {
   GeorchestraUser: {
