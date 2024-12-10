@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive } from 'vue'
+import { computed, onMounted, onUpdated, reactive } from 'vue'
 import { getUserDetails, getPlatformInfos } from './auth'
 import type { User, PlatformInfos } from './auth'
 import UserIcon from './ui/UserIcon.vue'
@@ -24,6 +24,8 @@ const state = reactive({
   lang3: 'eng',
   legacyHeader: false,
   loaded: false,
+  links: [] as string[],
+  matchedLink: null as null | string,
   matchedRouteScore: 0,
 })
 
@@ -61,6 +63,13 @@ function setI18n(externalI18n: object): void {
     externalI18n,
     state.config.lang || navigator.language.substring(0, 2) || 'en'
   )
+  state.loaded = true
+}
+
+function getActiveTab(str: string): void {
+  state.matchedRouteScore = 0
+  window.location.href = computeUrl(str)
+  window.location.reload()
 }
 
 function activeApp(link: Link): boolean {
@@ -91,11 +100,19 @@ function activeApp(link: Link): boolean {
     matched && link.activeAppUrl.length > state.matchedRouteScore
       ? link.activeAppUrl.length
       : state.matchedRouteScore
+  console.log(
+    matched,
+    link.activeAppUrl,
+    state.matchedRouteScore,
+    link.activeAppUrl.length
+  )
   return matched && state.matchedRouteScore === link.activeAppUrl?.length
 }
 
 onMounted(() => {
   getUserDetails().then(user => {
+    state.user = user
+    state.config.stylesheet ??= props.stylesheet
     if (props.configFile)
       fetch(props.configFile)
         .then(res => res.json())
@@ -107,14 +124,11 @@ onMounted(() => {
           setI18n(json.i18n)
         })
     else setI18n({})
-    state.user = user
-    state.config.stylesheet ??= props.stylesheet
     if (user.roles.some(role => state.config.adminRoles.includes(role))) {
       getPlatformInfos().then(
         platformInfos => (state.platformInfos = platformInfos)
       )
     }
-    state.loaded = true
   })
 })
 </script>
@@ -171,6 +185,7 @@ onMounted(() => {
               <a
                 :href="(item as Link).url"
                 class="nav-item"
+                @click="getActiveTab((item as Link).url)"
                 :class="{
                   active:
                     activeApp((item as Link)) ,
@@ -210,6 +225,7 @@ onMounted(() => {
                   <template v-for="subitem in (item as Dropdown).items">
                     <li
                       v-if="checkCondition(subitem)"
+                      @click="getActiveTab((subitem as Link).url)"
                       :class="{
                         active:
                           activeApp((subitem as Link)),

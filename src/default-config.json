@@ -41,8 +41,8 @@
       {
         "label": "Datafeeder",
         "i18n": "datafeeder",
-        "url": "/datafeeder",
-        "activeAppUrl": "/datafeeder",
+        "url": "/import",
+        "activeAppUrl": "/import",
         "hasRole": "ROLE_SUPERUSER,ROLE_IMPORT"
       },
       {
@@ -81,7 +81,7 @@
             "label": "Console",
             "i18n": "users",
             "url": "/console/manager/home",
-            "activeAppUrl": "/console",
+            "activeAppUrl": "/console/manager",
             "hasRole": "ROLE_SUPERUSER"
           }
         ]
