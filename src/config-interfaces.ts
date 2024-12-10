@@ -8,7 +8,6 @@ export interface Link extends MenuItem {
   label: string
   url: string
   i18n?: string
-  activeApp?: string
   activeAppUrl?: string
 }
 

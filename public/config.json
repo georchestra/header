@@ -12,22 +12,27 @@
       "label": "Catalogue",
       "i18n": "hello",
       "url": "/datahub/",
-      "activeApp" : "datahub"
+      "activeAppUrl" : "/datahub"
     },
     {
       "label": "My other service",
       "url": "/geoserver/web",
-      "activeAppUrl": "start:/geoserver"
+      "activeAppUrl": "/geoserver"
     },
     {
-      "label": "Maps",
+      "label": "Mapstore",
+      "url": "/mapstore/#/",
+      "activeAppUrl": "/mapstore"
+    },
+    {
+      "label": "Mapstore home",
       "url": "/mapstore/#/home",
-      "activeAppUrl": "start:/mapstore"
+      "activeAppUrl": "/mapstore/#/home"
     },
     {
-      "label": "Cadastre",
-      "url": "/mapstore/#/cadastre",
-      "activeAppUrl": "start:/mapstore/#/cadastre"
+      "label": "Cadastrapp",
+      "url": "/mapstore/#/context/cadastre",
+      "activeAppUrl": "includes:/#/context/cadastre"
     },
     {
       "type": "dropdown",

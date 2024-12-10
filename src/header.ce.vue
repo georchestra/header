@@ -7,7 +7,7 @@ import GeorchestraLogo from '@/ui/GeorchestraLogo.vue'
 import ChevronDownIcon from '@/ui/ChevronDownIcon.vue'
 import { getI18n, i18n } from '@/i18n'
 import type { Link, Separator, Dropdown, Config } from '@/config-interfaces'
-import { defaultMenu, defaultConfig } from '@/config.json'
+import { defaultMenu, defaultConfig } from '@/default-config.json'
 
 const props = defineProps<{
   activeApp?: string
@@ -53,7 +53,7 @@ function computeUrl(url: string): string {
 }
 
 function t(msg?: string) {
-  return i18n.global.t(msg)
+  return i18n?.global.t(msg)
 }
 
 function setI18n(externalI18n: object): void {
@@ -61,11 +61,10 @@ function setI18n(externalI18n: object): void {
     externalI18n,
     state.config.lang || navigator.language.substring(0, 2) || 'en'
   )
-  state.loaded = true
 }
 
 function activeApp(link: Link): boolean {
-  if (!link.activeAppUrl) return link.activeApp === props.activeApp
+  if (!link.activeAppUrl) return false
   const splitted = link.activeAppUrl.split(':')
   const base = splitted.length > 1 ? splitted[0] : 'start'
   const url = computeUrl(splitted.length > 1 ? splitted[1] : splitted[0])
@@ -109,11 +108,13 @@ onMounted(() => {
         })
     else setI18n({})
     state.user = user
+    state.config.stylesheet ??= props.stylesheet
     if (user.roles.some(role => state.config.adminRoles.includes(role))) {
       getPlatformInfos().then(
         platformInfos => (state.platformInfos = platformInfos)
       )
     }
+    state.loaded = true
   })
 })
 </script>
@@ -137,7 +138,7 @@ onMounted(() => {
       :href="props.stylesheet || state.config.stylesheet"
       v-if="props.stylesheet || state.config.stylesheet"
     />
-    <component :is="'style'" v-if="!state.config.stylesheet">
+    <component :is="'style'" v-if="!props.stylesheet && !state.config.stylesheet">
       header { --georchestra-header-primary: #85127e;
       --georchestra-header-secondary: #1b1f3b;
       --georchestra-header-primary-light: #85127e1a;
@@ -163,7 +164,7 @@ onMounted(() => {
         </a>
         <nav class="flex justify-center items-center font-semibold">
           <template v-for="(item, index) in state.menu" :key="index">
-            <template v-if="!item.type && checkCondition(item)">
+            <template v-if="!item.type && checkCondition(item)" >
               <a
                 :href="(item as Link).url"
                 class="nav-item"
@@ -171,11 +172,7 @@ onMounted(() => {
                   active:
                     activeApp((item as Link)) ,
                 }"
-                >{{
-                  (item as Link).i18n
-                    ? t((item as Link).i18n)
-                    : (item as Link).label
-                }}</a
+                >{{ (item as Link).i18n ? t((item as Link).i18n) : (item as Link).label }}</a
               >
             </template>
             <template
@@ -191,9 +188,7 @@ onMounted(() => {
                   class="nav-item after:hover:scale-x-0 flex items-center"
                 >
                   <span class="lg:mr-2 md:mr-1 first-letter:capitalize">{{
-                    (item as Dropdown).i18n
-                      ? t((item as Dropdown).i18n)
-                      : (item as Dropdown).label
+                      (item as Dropdown).i18n ? t((item as Dropdown).i18n) : (item as Dropdown).label
                   }}</span>
                   <ChevronDownIcon
                     class="w-4 h-4"
