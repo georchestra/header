@@ -138,7 +138,10 @@ onMounted(() => {
       :href="props.stylesheet || state.config.stylesheet"
       v-if="props.stylesheet || state.config.stylesheet"
     />
-    <component :is="'style'" v-if="!props.stylesheet && !state.config.stylesheet">
+    <component
+      :is="'style'"
+      v-if="!props.stylesheet && !state.config.stylesheet"
+    >
       header { --georchestra-header-primary: #85127e;
       --georchestra-header-secondary: #1b1f3b;
       --georchestra-header-primary-light: #85127e1a;
@@ -164,7 +167,7 @@ onMounted(() => {
         </a>
         <nav class="flex justify-center items-center font-semibold">
           <template v-for="(item, index) in state.menu" :key="index">
-            <template v-if="!item.type && checkCondition(item)" >
+            <template v-if="!item.type && checkCondition(item)">
               <a
                 :href="(item as Link).url"
                 class="nav-item"
@@ -172,7 +175,11 @@ onMounted(() => {
                   active:
                     activeApp((item as Link)) ,
                 }"
-                >{{ (item as Link).i18n ? t((item as Link).i18n) : (item as Link).label }}</a
+                >{{
+                  (item as Link).i18n
+                    ? t((item as Link).i18n)
+                    : (item as Link).label
+                }}</a
               >
             </template>
             <template
@@ -188,7 +195,9 @@ onMounted(() => {
                   class="nav-item after:hover:scale-x-0 flex items-center"
                 >
                   <span class="lg:mr-2 md:mr-1 first-letter:capitalize">{{
-                      (item as Dropdown).i18n ? t((item as Dropdown).i18n) : (item as Dropdown).label
+                    (item as Dropdown).i18n
+                      ? t((item as Dropdown).i18n)
+                      : (item as Dropdown).label
                   }}</span>
                   <ChevronDownIcon
                     class="w-4 h-4"
