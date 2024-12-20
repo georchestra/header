@@ -64,11 +64,16 @@ function setI18n(externalI18n: object): void {
   state.loaded = true
 }
 
-function activeApp(link: Link): boolean {
+function matchLinkUrl(link: Link): boolean {
   if (!link.activeAppUrl) return false
-  const splitted = link.activeAppUrl.split(':')
-  const base = splitted.length > 1 ? splitted[0] : 'start'
-  const url = computeUrl(splitted.length > 1 ? splitted[1] : splitted[0])
+  const activeAppUrlSplitted = link.activeAppUrl.split(':')
+  const base =
+    activeAppUrlSplitted.length > 1 ? activeAppUrlSplitted[0] : 'start'
+  const url = computeUrl(
+    activeAppUrlSplitted.length > 1
+      ? activeAppUrlSplitted[1]
+      : activeAppUrlSplitted[0]
+  )
   const computedUrl = window.location.href.substring(
     window.location.origin.length,
     window.location.href.length
@@ -173,7 +178,7 @@ onMounted(() => {
                 class="nav-item"
                 :class="{
                   active:
-                    activeApp((item as Link)) ,
+                    matchLinkUrl((item as Link)) ,
                 }"
                 >{{
                   (item as Link).i18n
@@ -212,7 +217,7 @@ onMounted(() => {
                       v-if="checkCondition(subitem)"
                       :class="{
                         active:
-                          activeApp((subitem as Link)),
+                          matchLinkUrl((subitem as Link)),
                       }"
                     >
                       <a :href="computeUrl(subitem.url)" class="capitalize">
