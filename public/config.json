@@ -5,6 +5,7 @@
     "stylesheet": "https://data.lillemetropole.fr/public/georchestra.css",
     "logoUrl": "https://data.lillemetropole.fr/public/logo-mel.jpg",
     "hideLogin": false,
+    "iconsUrl": "https://cdn.jsdelivr.net/gh/iconoir-icons/iconoir@main/css/iconoir.css",
     "lang": "es"
   },
   "menu": [
@@ -12,7 +13,7 @@
       "label": "Catalogue",
       "i18n": "hello",
       "url": "/datahub/",
-      "activeAppUrl" : "/datahub"
+      "activeAppUrl": "/datahub"
     },
     {
       "label": "My other service",
@@ -22,7 +23,8 @@
     {
       "label": "Mapstore",
       "url": "/mapstore/#/",
-      "activeAppUrl": "/mapstore"
+      "activeAppUrl": "/mapstore",
+      "icon": "iconoir-map"
     },
     {
       "label": "Mapstore home",
@@ -42,7 +44,14 @@
           "label": "Console",
           "i18n": "users",
           "url": "/console/manager/home",
-          "activeAppUrl": "/console"
+          "activeAppUrl": "/console",
+          "icon": "iconoir-globe"
+        },
+        {
+          "label": "Console",
+          "i18n": "users",
+          "url": "/console/manager/blep",
+          "activeAppUrl": "/console/bl"
         }
       ]
     }
@@ -53,6 +62,9 @@
     },
     "fr": {
       "hello": "Bonjour"
+    },
+    "es": {
+      "hello": "Hola"
     }
   }
 }

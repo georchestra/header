@@ -242,7 +242,10 @@ onMounted(() => {
                 <ul
                   class="absolute hidden group-hover:block border rounded w-full admin-dropdown z-[1002] bg-white"
                 >
-                  <template v-for="subitem in (item as Dropdown).items">
+                  <template
+                    v-for="(subitem, subindex) in (item as Dropdown).items"
+                    :key="subindex"
+                  >
                     <li
                       v-if="checkCondition(subitem)"
                       @click="state.activeAppUrl = (item as Link).activeAppUrl"

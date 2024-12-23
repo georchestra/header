@@ -1,7 +1,6 @@
 const AUTH_API_URL = '/whoami'
 const CONSOLE_PLATFORM_API_URL = '/console/private/platform/infos'
 
-
 interface WhoAmIResponse {
   GeorchestraUser: {
     roles: string[]
