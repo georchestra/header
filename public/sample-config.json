@@ -23,8 +23,7 @@
       "icon": "iconoir-map"
     },
     {
-      "type": "separator",
-      "hasRole": "ROLE_SUPERUSER,ROLE_GN_EDITOR,ROLE_GN_ADMIN,ROLE_MAPSTORE_ADMIN"
+      "type": "separator"
     },
     {
       "type": "dropdown",
@@ -36,6 +35,14 @@
           "url": "/console/manager/home",
           "activeAppUrl": "/console",
           "icon": "iconoir-globe"
+        },
+        {
+          "label": "Geonetwork",
+          "i18n": "catalogue",
+          "url": "/geonetwork/srv/:lang3/catalog.edit#/board",
+          "activeAppUrl": "/geonetwork",
+          "hasRole": "ROLE_GN_EDITOR",
+          "blockedRole": "ROLE_SUPERUSER,ROLE_GN_REVIEWER,ROLE_GN_ADMIN"
         }
       ]
     }
