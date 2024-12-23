@@ -22,7 +22,6 @@ const state = reactive({
   menu: defaultMenu as (Link | Separator | Dropdown)[],
   config: defaultConfig as Config,
   lang3: 'eng',
-  legacyHeader: false,
   loaded: false,
   matchedRouteScore: 0,
   activeAppUrl: '',
@@ -108,6 +107,15 @@ function allNodes(obj: any, key: string, array?: any[]): string[] {
   return array
 }
 
+function setI18nAndActiveApp(i18n: any) {
+  state.lang3 = getI18n(
+    i18n,
+    state.config.lang || navigator.language.substring(0, 2) || 'en'
+  )
+  determineActiveApp()
+  state.loaded = true
+}
+
 onMounted(() => {
   getUserDetails().then(user => {
     state.user = user
@@ -120,17 +128,10 @@ onMounted(() => {
           if (json.menu) {
             state.menu = json.menu
           }
-          state.lang3 = getI18n(
-            json.i18n,
-            state.config.lang || navigator.language.substring(0, 2) || 'en'
-          )
-          determineActiveApp()
-          state.loaded = true
+          setI18nAndActiveApp(json.i18n)
         })
     else {
-      state.lang3 = getI18n({}, navigator.language.substring(0, 2) || 'en')
-      determineActiveApp()
-      state.loaded = true
+      setI18nAndActiveApp({})
     }
     if (user.roles.some(role => state.config.adminRoles.includes(role))) {
       getPlatformInfos().then(
