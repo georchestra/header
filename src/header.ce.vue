@@ -124,10 +124,12 @@ onMounted(() => {
       fetch(props.configFile)
         .then(res => res.json())
         .then(json => {
-          state.config = json.config
+          console.log(state.config)
+          state.config = Object.assign({}, state.config, json.config)
           if (json.menu) {
             state.menu = json.menu
           }
+          console.log(state.config)
           setI18nAndActiveApp(json.i18n)
         })
     else {
