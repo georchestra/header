@@ -24,7 +24,7 @@ const state = reactive({
   lang3: 'eng',
   loaded: false,
   matchedRouteScore: 0,
-  activeAppUrl: '',
+  activeAppUrl: '' as string | undefined,
 })
 
 const isAnonymous = computed(() => !state.user || state.user.anonymous)
@@ -207,8 +207,8 @@ onMounted(() => {
                 }"
               >
                 <i
-                  v-if="item.icon"
-                  :class="item.icon"
+                  v-if="(item as Link).icon"
+                  :class="(item as Link).icon"
                   class="item-icon"
                   style="font-size: 0.8rem"
                 ></i>
