@@ -32,11 +32,11 @@ Iframe can still be set with defining `legacy-url` attribute, style can also be 
 
 Attributes available :
 
-| Attribute   | Description                                                                    | Example                                                     | For new header | For legacy |
-| ----------- | ------------------------------------------------------------------------------ | ----------------------------------------------------------- | -------------- | ---------- |
-| active-app  | Use this attribute to set the active class in menu                             | `<geor-header active-app='console'>`                        |                | v          |
-| config-file | Use this attribute to set the config file for the new header (not legacy one). | `<geor-header config-file="/config.json">`                  | v              |            |
-| stylesheet  | adds this stylesheet to the new header (not legacy one).                       | `<geor-header stylesheet="mystylesheet.css"></geor-header>` | v              |            |
+| Attribute   | Description                                                                                                 | Example                                                     | For new header | For legacy |
+| ----------- |-------------------------------------------------------------------------------------------------------------| ----------------------------------------------------------- | -------------- | ---------- |
+| active-app  | Use this attribute to set the active class in menu                                                          | `<geor-header active-app='console'>`                        |                | v          |
+| config-file | Use this attribute to set the config file for the new header (not legacy one). See [CONFIG.md](./CONFIG.md) | `<geor-header config-file="/config.json">`                  | v              |            |
+| stylesheet  | adds this stylesheet to the new header (not legacy one).                                                    | `<geor-header stylesheet="mystylesheet.css"></geor-header>` | v              |            |
 
 3. Provide a custom stylesheet
 
