@@ -27,6 +27,10 @@ export const getI18n = (messages: any, lang: string) => {
   return LANG_2_TO_3_MAPPER[lang]
 }
 
+export const t = (msg?: string) => {
+  return i18n?.global.t(msg)
+}
+
 export const LANG_2_TO_3_MAPPER: { [index: string]: any } = {
   en: 'eng',
   nl: 'dut',

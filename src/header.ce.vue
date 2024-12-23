@@ -5,7 +5,7 @@ import type { User, PlatformInfos } from './auth'
 import UserIcon from './ui/UserIcon.vue'
 import GeorchestraLogo from '@/ui/GeorchestraLogo.vue'
 import ChevronDownIcon from '@/ui/ChevronDownIcon.vue'
-import { getI18n, i18n } from '@/i18n'
+import { getI18n, t } from '@/i18n'
 import type { Link, Separator, Dropdown, Config } from '@/config-interfaces'
 import { defaultMenu, defaultConfig } from '@/default-config.json'
 
@@ -25,6 +25,7 @@ const state = reactive({
   legacyHeader: false,
   loaded: false,
   matchedRouteScore: 0,
+  activeAppUrl: '',
 })
 
 const isAnonymous = computed(() => !state.user || state.user.anonymous)
@@ -48,56 +49,63 @@ function checkCondition(item: Link | Separator | Dropdown): boolean {
   return hasRole.split(',').some(c => state.user?.roles?.indexOf(c) !== -1)
 }
 
-function computeUrl(url: string): string {
+function replaceUrlsVariables(url: string): string {
   return url.replace(/:lang3/, state.lang3)
 }
 
-function t(msg?: string) {
-  return i18n?.global.t(msg)
-}
-
-function setI18n(externalI18n: object): void {
-  state.lang3 = getI18n(
-    externalI18n,
-    state.config.lang || navigator.language.substring(0, 2) || 'en'
-  )
-  state.loaded = true
-}
-
-function matchLinkUrl(link: Link): boolean {
-  if (!link.activeAppUrl) return false
-  const activeAppUrlSplitted = link.activeAppUrl.split(':')
-  const base =
-    activeAppUrlSplitted.length > 1 ? activeAppUrlSplitted[0] : 'start'
-  const url = computeUrl(
-    activeAppUrlSplitted.length > 1
-      ? activeAppUrlSplitted[1]
-      : activeAppUrlSplitted[0]
-  )
+function determineActiveApp(): void {
+  const tmp = allNodes(state.menu, 'activeAppUrl')
   const computedUrl = window.location.href.substring(
     window.location.origin.length,
     window.location.href.length
   )
-  let matched = false
-  switch (base) {
-    case 'end':
-      matched = computedUrl.endsWith(url)
-      break
-    case 'includes':
-      matched = computedUrl.includes(url)
-      break
-    case 'exact':
-      matched = computedUrl === url
-      break
-    default:
-      matched = computedUrl.startsWith(url)
-      break
+  let matched: boolean
+  for (const link of tmp) {
+    matched = false
+    const activeAppUrlSplitted = link.split(':')
+    const base =
+      activeAppUrlSplitted.length > 1 ? activeAppUrlSplitted[0] : 'start'
+    const url = replaceUrlsVariables(
+      activeAppUrlSplitted.length > 1
+        ? activeAppUrlSplitted[1]
+        : activeAppUrlSplitted[0]
+    )
+    switch (base) {
+      case 'end':
+        matched = computedUrl.endsWith(url)
+        break
+      case 'includes':
+        matched = computedUrl.includes(url)
+        break
+      case 'exact':
+        matched = computedUrl === url
+        break
+      default:
+        matched = computedUrl.startsWith(url)
+        break
+    }
+    state.matchedRouteScore =
+      matched && link.length > state.matchedRouteScore
+        ? link.length
+        : state.matchedRouteScore
+    if (matched && state.matchedRouteScore === link?.length) {
+      state.activeAppUrl = link
+    }
   }
-  state.matchedRouteScore =
-    matched && link.activeAppUrl.length > state.matchedRouteScore
-      ? link.activeAppUrl.length
-      : state.matchedRouteScore
-  return matched && state.matchedRouteScore === link.activeAppUrl?.length
+}
+
+function allNodes(obj: any, key: string, array?: any[]): string[] {
+  array = array || []
+  if ('object' === typeof obj) {
+    for (let k in obj) {
+      if (k === key) {
+        array.push(obj[k])
+      } else {
+        allNodes(obj[k], key, array)
+      }
+    }
+  }
+  return array
 }
 
 onMounted(() => {
@@ -112,9 +120,18 @@ onMounted(() => {
           if (json.menu) {
             state.menu = json.menu
           }
-          setI18n(json.i18n)
+          state.lang3 = getI18n(
+            json.i18n,
+            state.config.lang || navigator.language.substring(0, 2) || 'en'
+          )
+          determineActiveApp()
+          state.loaded = true
         })
-    else setI18n({})
+    else {
+      state.lang3 = getI18n({}, navigator.language.substring(0, 2) || 'en')
+      determineActiveApp()
+      state.loaded = true
+    }
     if (user.roles.some(role => state.config.adminRoles.includes(role))) {
       getPlatformInfos().then(
         platformInfos => (state.platformInfos = platformInfos)
@@ -176,9 +193,9 @@ onMounted(() => {
               <a
                 :href="(item as Link).url"
                 class="nav-item"
+                @click="state.activeAppUrl = (item as Link).activeAppUrl"
                 :class="{
-                  active:
-                    matchLinkUrl((item as Link)) ,
+                  active: (item as Link).activeAppUrl == state.activeAppUrl,
                 }"
                 >{{
                   (item as Link).i18n
@@ -215,12 +232,15 @@ onMounted(() => {
                   <template v-for="subitem in (item as Dropdown).items">
                     <li
                       v-if="checkCondition(subitem)"
+                      @click="state.activeAppUrl = (item as Link).activeAppUrl"
                       :class="{
-                        active:
-                          matchLinkUrl((subitem as Link)),
+                        active: (subitem as Link).activeAppUrl == state.activeAppUrl,
                       }"
                     >
-                      <a :href="computeUrl(subitem.url)" class="capitalize">
+                      <a
+                        :href="replaceUrlsVariables(subitem.url)"
+                        class="capitalize"
+                      >
                         {{ subitem.i18n ? t(subitem.i18n) : subitem.label }}</a
                       >
                     </li>
