@@ -25,7 +25,7 @@ Config can contains old tag attributes :
   }
 ```
 
-Full configuration [is here](https://github.com/georchestra/header/blob/main/src/config-interfaces.ts#L32-L53).
+Full configuration [is here](./src/config-interfaces.ts#L32-L53).
 
 :warning: You can also define stylesheet in the datadir (`default.properties`) because this file can be used in other georchestra's apps. It will take precedence over the one set in the config file of the header.
 
