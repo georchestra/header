@@ -161,6 +161,11 @@ onMounted(() => {
       :href="props.stylesheet || state.config.stylesheet"
       v-if="props.stylesheet || state.config.stylesheet"
     />
+    <link
+      rel="stylesheet"
+      :href="state.config.iconsUrl"
+      v-if="state.config.iconsUrl"
+    />
     <component
       :is="'style'"
       v-if="!props.stylesheet && !state.config.stylesheet"
@@ -198,12 +203,19 @@ onMounted(() => {
                 :class="{
                   active: (item as Link).activeAppUrl == state.activeAppUrl,
                 }"
-                >{{
+              >
+                <i
+                  v-if="item.icon"
+                  :class="item.icon"
+                  class="item-icon"
+                  style="font-size: 0.8rem"
+                ></i>
+                {{
                   (item as Link).i18n
                     ? t((item as Link).i18n)
                     : (item as Link).label
-                }}</a
-              >
+                }}
+              </a>
             </template>
             <template
               v-else-if="(item as Separator).type === 'separator' && checkCondition(item)"
@@ -240,10 +252,18 @@ onMounted(() => {
                     >
                       <a
                         :href="replaceUrlsVariables(subitem.url)"
-                        class="capitalize"
+                        class="capitalize !flex justify-center items-center"
                       >
-                        {{ subitem.i18n ? t(subitem.i18n) : subitem.label }}</a
-                      >
+                        <i
+                          v-if="subitem.icon"
+                          :class="subitem.icon"
+                          class="pr-1 block pb-[2px] subitem-icon"
+                          style="font-size: 1rem"
+                        ></i>
+                        <span class="block">{{
+                          subitem.i18n ? t(subitem.i18n) : subitem.label
+                        }}</span>
+                      </a>
                     </li>
                   </template>
                 </ul>

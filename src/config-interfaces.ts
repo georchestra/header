@@ -9,6 +9,7 @@ export interface Link extends MenuItem {
   url: string
   i18n?: string
   activeAppUrl?: string
+  icon?: string
 }
 
 export interface Dropdown extends MenuItem {
@@ -27,6 +28,7 @@ export interface Config {
   hideLogin?: boolean
   style?: string
   stylesheet?: string
+  iconsUrl?: string
   lang?: string
   adminRoles: string[]
 }
