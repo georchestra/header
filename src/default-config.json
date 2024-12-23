@@ -3,7 +3,6 @@
     "legacyHeader": false,
     "legacyUrl": "/header/",
     "hideLogin": false,
-    "style": "",
     "adminRoles": [
       "ROLE_SUPERUSER",
       "ROLE_ORGADMIN",

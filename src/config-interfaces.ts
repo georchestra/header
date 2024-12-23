@@ -40,8 +40,6 @@ export interface Config {
   logoTitle?: string
   //Whether to hide the login button
   hideLogin?: boolean
-  //Custom style to apply to the header
-  style?: string
   //Custom stylesheet to apply to the header
   stylesheet?: string
   //Link to icons url. Tested with https://cdn.jsdelivr.net/gh/iconoir-icons/iconoir@main/css/iconoir.css

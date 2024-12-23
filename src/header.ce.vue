@@ -13,6 +13,7 @@ const props = defineProps<{
   activeApp?: string
   configFile?: string
   stylesheet?: string
+  height?: number
 }>()
 
 const state = reactive({
@@ -107,9 +108,9 @@ function allNodes(obj: any, key: string, array?: any[]): string[] {
   return array
 }
 
-function setI18nAndActiveApp(i18n: any) {
+function setI18nAndActiveApp(i18n?: any) {
   state.lang3 = getI18n(
-    i18n,
+    i18n || {},
     state.config.lang || navigator.language.substring(0, 2) || 'en'
   )
   determineActiveApp()
@@ -132,9 +133,7 @@ onMounted(() => {
           console.log(state.config)
           setI18nAndActiveApp(json.i18n)
         })
-    else {
-      setI18nAndActiveApp({})
-    }
+    else setI18nAndActiveApp()
     if (user.roles.some(role => state.config.adminRoles.includes(role))) {
       getPlatformInfos().then(
         platformInfos => (state.platformInfos = platformInfos)
@@ -150,13 +149,13 @@ onMounted(() => {
       v-bind:src="`${state.config.legacyUrl}${
         props.activeApp ? `?active=${props.activeApp}` : ''
       }`"
-      v-bind:style="state.config.style"
+      :style="`height:${props.height}px;width:100%;border:0;`"
     ></iframe>
   </div>
   <header
     v-else-if="state.loaded"
-    class="host h-[80px] text-base"
-    v-bind:style="state.config.style"
+    class="host h-[80px] text-base ${props.height}"
+    :style="`height:${props.height}px`"
   >
     <link
       rel="stylesheet"
