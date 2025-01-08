@@ -1,7 +1,5 @@
 {
   "config": {
-    "legacyHeader": false,
-    "legacyUrl": "/header",
     "stylesheet": "/public/georchestra.css",
     "logoUrl": "/public/logo-mel.jpg",
     "hideLogin": false,

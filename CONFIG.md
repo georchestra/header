@@ -16,8 +16,6 @@ Inside it, you can set the following properties:
 Config can contains old tag attributes :
 ```json
   "config": {
-    "legacyHeader": "false",
-    "legacyUrl": "/header",
     "stylesheet": "https://data.lillemetropole.fr/public/georchestra.css",
     "logoUrl": "https://data.lillemetropole.fr/public/logo-mel.jpg",
     "hideLogin": false,

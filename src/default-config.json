@@ -1,7 +1,5 @@
 {
   "defaultConfig": {
-    "legacyHeader": false,
-    "legacyUrl": "/header/",
     "hideLogin": false,
     "adminRoles": [
       "ROLE_SUPERUSER",

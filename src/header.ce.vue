@@ -14,6 +14,8 @@ const props = defineProps<{
   configFile?: string
   stylesheet?: string
   height?: number
+  legacyHeader?: string
+  legacyUrl?: string
 }>()
 
 const state = reactive({
@@ -125,12 +127,10 @@ onMounted(() => {
       fetch(props.configFile)
         .then(res => res.json())
         .then(json => {
-          console.log(state.config)
           state.config = Object.assign({}, state.config, json.config)
           if (json.menu) {
             state.menu = json.menu
           }
-          console.log(state.config)
           setI18nAndActiveApp(json.i18n)
         })
     else setI18nAndActiveApp()
@@ -143,10 +143,10 @@ onMounted(() => {
 })
 </script>
 <template>
-  <div v-if="state.config.legacyHeader && state.loaded">
+  <div v-if="props.legacyHeader && state.loaded">
     <iframe
       class="w-full"
-      v-bind:src="`${state.config.legacyUrl}${
+      v-bind:src="`${props.legacyUrl}${
         props.activeApp ? `?active=${props.activeApp}` : ''
       }`"
       :style="`height:${props.height}px;width:100%;border:0;`"
@@ -154,7 +154,7 @@ onMounted(() => {
   </div>
   <header
     v-else-if="state.loaded"
-    class="host h-[80px] text-base ${props.height}"
+    class="host h-[80px] text-base"
     :style="`height:${props.height}px`"
   >
     <link

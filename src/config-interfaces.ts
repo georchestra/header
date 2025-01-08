@@ -30,10 +30,6 @@ export interface Dropdown extends MenuItem {
 export interface Separator extends MenuItem {}
 
 export interface Config {
-  //Display or not the legacy header (an iframe pointing to the legacyUrl)
-  legacyHeader?: boolean
-  //Legacy url to display in an iframe
-  legacyUrl?: string
   //Logo url to display in the header
   logoUrl?: string
   //Title to the logo displayed in the header
