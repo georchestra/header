@@ -16,6 +16,7 @@ const props = defineProps<{
   height?: number
   legacyHeader?: string
   legacyUrl?: string
+  logoUrl?: string
 }>()
 
 const state = reactive({
@@ -185,8 +186,8 @@ onMounted(() => {
           class="flex justify-center items-center lg:px-3 md:px-2 py-2"
         >
           <img
-            v-if="state.config.logoUrl"
-            :src="state.config.logoUrl"
+            v-if="props.logoUrl || state.config.logoUrl"
+            :src="props.logoUrl || state.config.logoUrl"
             alt="geOrchestra logo"
             class="w-32"
           />
@@ -344,8 +345,8 @@ onMounted(() => {
             </button>
             <a href="/" class="block ml-3">
               <img
-                v-if="state.config.logoUrl"
-                :src="state.config.logoUrl"
+                v-if="props.logoUrl || state.config.logoUrl"
+                :src="props.logoUrl || state.config.logoUrl"
                 alt="geOrchestra logo"
                 class="w-24"
               />
