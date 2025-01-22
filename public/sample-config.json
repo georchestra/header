@@ -44,5 +44,16 @@
         }
       ]
     }
-  ]
+  ],
+  "i18n": {
+    "en": {
+      "customi18n": "WMS/WFS service"
+    },
+    "fr": {
+      "customi18n": "Service WMS/WFS"
+    },
+    "es": {
+      "customi18n": "Servicio WMS/WFS"
+    }
+  }
 }
