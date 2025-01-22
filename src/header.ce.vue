@@ -206,17 +206,21 @@ onMounted(() => {
                   active: (item as Link).activeAppUrl == state.activeAppUrl,
                 }"
               >
-                <i
-                  v-if="(item as Link).icon"
-                  :class="(item as Link).icon"
-                  class="item-icon"
-                  style="font-size: 0.8rem"
-                ></i>
-                {{
-                  (item as Link).i18n
-                    ? t((item as Link).i18n)
-                    : (item as Link).label
-                }}
+                <div class="flex items-center">
+                  <i
+                    v-if="(item as Link).icon"
+                    :class="(item as Link).icon"
+                    class="item-icon"
+                    style="font-size: 0.9rem"
+                  ></i>
+                  <span class="ml-1">
+                    {{
+                      (item as Link).i18n
+                        ? t((item as Link).i18n)
+                        : (item as Link).label
+                    }}
+                  </span>
+                </div>
               </a>
             </template>
             <template
