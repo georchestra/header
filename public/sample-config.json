@@ -18,7 +18,8 @@
       "i18n": "customi18n",
       "url": "/geoserver/web",
       "activeAppUrl": "includes:/geoserver",
-      "icon": "iconoir-map"
+      "icon": "iconoir-map",
+      "disabled": true
     },
     {
       "type": "separator"
@@ -39,8 +40,7 @@
           "i18n": "catalogue",
           "url": "/geonetwork/srv/:lang3/catalog.edit#/board",
           "activeAppUrl": "/geonetwork",
-          "hasRole": "ROLE_GN_EDITOR",
-          "blockedRole": "ROLE_SUPERUSER,ROLE_GN_REVIEWER,ROLE_GN_ADMIN"
+          "disabled": true
         }
       ]
     }
