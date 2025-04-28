@@ -522,9 +522,7 @@ onMounted(() => {
     @apply bg-primary-light;
   }
 
-  .nav-item.disabled,
-  .nav-item-mobile.disabled,
-  .dropdown > li.disabled {
+  .disabled {
     @apply cursor-pointer pointer-events-none;
   }
 
