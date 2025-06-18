@@ -139,6 +139,34 @@ onMounted(() => {
               state.menu = json.menu
             }
             setI18nAndActiveApp(json.i18n)
+
+            for (const fontUrl of state.config.fontsUrls) {
+              if (fontUrl.startsWith('http')) {
+                const link = document.createElement('link')
+                link.rel = 'stylesheet'
+                link.href = fontUrl
+                document.head.appendChild(link)
+              } else {
+                const fontName =
+                  fontUrl.split('/').pop()?.split('.')[0].split(/[-_]/)[0] ||
+                  'CustomFont'
+                const regex = /\.(woff2?|ttf|otf|eot)(?=([?#/]|$))/i
+                const match = fontUrl.match(regex)
+                let extension = ''
+                if (match) {
+                  extension = match[1]
+                }
+                const style = document.createElement('style')
+                style.textContent = `
+                  @font-face {
+                    font-family: '${fontName}';
+                    src: url('${fontUrl}') format('${
+                  extension === 'ttf' ? 'truetype' : extension
+                }');
+                `
+                document.head.appendChild(style)
+              }
+            }
           })
       else setI18nAndActiveApp()
       if (user.roles.some(role => state.config.adminRoles.includes(role))) {
