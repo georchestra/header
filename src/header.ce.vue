@@ -17,6 +17,7 @@ const props = defineProps<{
   legacyHeader?: string
   legacyUrl?: string
   logoUrl?: string
+  nonce?: string
 }>()
 
 const state = reactive({
@@ -169,11 +170,13 @@ onMounted(() => {
       rel="stylesheet"
       :href="props.stylesheet || state.config.stylesheet"
       v-if="props.stylesheet || state.config.stylesheet"
+      :nonce="props.nonce"
     />
     <link
       rel="stylesheet"
       :href="state.config.iconsUrl"
       v-if="state.config.iconsUrl"
+      :nonce="props.nonce"
     />
     <component
       :is="'style'"

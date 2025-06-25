@@ -32,15 +32,16 @@ Iframe can still be set with defining `legacy-url` attribute, style can also be 
 
 Attributes available :
 
-| Attribute   | Description                                                                                                 | Example                                                     | For new header | For legacy header (iframe) |
-|-------------|-------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------| -------------- |----------------------------|
-| active-app  | Use this attribute to set the active class in menu                                                          | `<geor-header active-app='console'>`                        |                | v                          |
-| config-file | Use this attribute to set the config file for the new header (not legacy one). See [CONFIG.md](./CONFIG.md) | `<geor-header config-file="/config.json">`                  | v              |                            |
-| stylesheet  | adds this stylesheet to the new header (not legacy one).                                                    | `<geor-header stylesheet="mystylesheet.css"></geor-header>` | v              |                            |
-| height      | sets the height of the header (in pixels)                                                                   | `<geor-header height="80"></geor-header>`                   | v              | v                          |
-| legacy-header | Use this attribute to enable the legacy header `iframe` tag. Needs `legacy-url`.                     | `<geor-header legacy-header='true' legacy-url="/header/">`                  |          | v          |
-| legacy-url    | Legacy URL: if set, activates iframe with src attribute pointing to this URL. Needs `legacy-header`. | `<geor-header legacy-header='true' legacy-url="/header/"></geor-header>`    |          | v          |
-| logo-url      | Use this attribute to set the logo for the new header (not legacy one).                              | `<geor-header logo-url='https://linktomylogo.com'>`                         | v        |            |
+| Attribute     | Description                                                                                                | Example                                                                  | For new header | For legacy header (iframe) |
+|---------------|------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------| -------------- |----------------------------|
+| active-app    | Use this attribute to set the active class in menu                                                         | `<geor-header active-app='console'>`                                     |                | v                          |
+| config-file   | Use this attribute to set the config file for the new header (not legacy one). See [CONFIG.md](./CONFIG.md) | `<geor-header config-file="/config.json">`                               | v              |                            |
+| stylesheet    | adds this stylesheet to the new header (not legacy one).                                                   | `<geor-header stylesheet="mystylesheet.css"></geor-header>`              | v              |                            |
+| height        | sets the height of the header (in pixels)                                                                  | `<geor-header height="80"></geor-header>`                                | v              | v                          |
+| legacy-header | Use this attribute to enable the legacy header `iframe` tag. Needs `legacy-url`.                           | `<geor-header legacy-header='true' legacy-url="/header/">`               |          | v          |
+| legacy-url    | Legacy URL: if set, activates iframe with src attribute pointing to this URL. Needs `legacy-header`.       | `<geor-header legacy-header='true' legacy-url="/header/"></geor-header>` |          | v          |
+| logo-url      | Use this attribute to set the logo for the new header (not legacy one).                                    | `<geor-header logo-url='https://linktomylogo.com'>`                      | v        |            |
+| nonce           | Use this attribute to set the nonce for links tags.                                        | `<geor-header nonce='mynonce'>`                                          | v        |            |
 
 3. Provide a custom stylesheet
 
