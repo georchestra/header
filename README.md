@@ -41,7 +41,6 @@ Attributes available :
 | legacy-header | Use this attribute to enable the legacy header `iframe` tag. Needs `legacy-url`.                           | `<geor-header legacy-header='true' legacy-url="/header/">`               |          | v          |
 | legacy-url    | Legacy URL: if set, activates iframe with src attribute pointing to this URL. Needs `legacy-header`.       | `<geor-header legacy-header='true' legacy-url="/header/"></geor-header>` |          | v          |
 | logo-url      | Use this attribute to set the logo for the new header (not legacy one).                                    | `<geor-header logo-url='https://linktomylogo.com'>`                      | v        |            |
-| nonce           | Use this attribute to set the nonce for links tags.                                        | `<geor-header nonce='mynonce'>`                                          | v        |            |
 
 3. Provide a custom stylesheet
 
@@ -59,6 +58,15 @@ header {
   background-color: red;
   color: white;
 }
+```
+
+4. Provide a Nonce for CSP
+
+If you are using a Content Security Policy (CSP) that requires a nonce for inline scripts, you can add the `custom-nonce` attribute to the `<geor-header>` tag *and* set the `nonce` attribute on the `<script>` tag that loads the header component. This allows the header to be compliant with your CSP.:
+
+```html
+<script src="https://cdn.jsdelivr.net/gh/georchestra/header@dist/header.js" nonce="your-nonce-value"></script>
+<geor-header custom-nonce="your-nonce-value"></geor-header>
 ```
 
 ## Development
