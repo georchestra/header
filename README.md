@@ -69,6 +69,8 @@ If you are using a Content Security Policy (CSP) that requires a nonce for inlin
 <geor-header custom-nonce="your-nonce-value"></geor-header>
 ```
 
+Ideally, those values should be set by the webapp embedding the web component, so that they're unique/random per-request. See georchestra/geoserver#42 for an example.
+
 ## Development
 
 On every new commit on main the `header.js` file on the `dist` branch is updated automatically.
