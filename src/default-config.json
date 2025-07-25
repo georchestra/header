@@ -43,6 +43,29 @@
       "hasRole": "ROLE_SUPERUSER,ROLE_IMPORT"
     },
     {
+      "type": "dropdown",
+      "label": "APIs",
+      "i18n": "APIs",
+      "items": [
+        {
+          "label": "OGC API Features",
+          "url": "/geoserver/ogc/features/v1 "
+        },
+        {
+          "label": "OGC API Records",
+          "url": "/ogc-api-records/"
+       },
+       {
+          "label": "Swagger Geonetwork",
+          "url": "/geonetwork/doc/api/index.html"
+       },
+       {
+          "label": "Swagger Superset",
+          "url": "/superset/swagger/v1"
+       }
+      ]
+    },
+    {
       "hasRole": "ROLE_SUPERUSER,ROLE_GN_EDITOR,ROLE_GN_ADMIN,ROLE_MAPSTORE_ADMIN",
       "type": "separator"
     },
