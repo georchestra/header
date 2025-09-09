@@ -192,7 +192,7 @@ onMounted(() => {
 <template>
   <div
     v-if="showCGUModal"
-    class="fixed inset-0 flex items-center justify-center bg-black/50 z-[2000]"
+    class="host fixed inset-0 flex items-center justify-center bg-black/50 z-[2000]"
   >
     <div class="bg-white rounded-2xl shadow-lg w-[90%] max-w-lg p-6">
       <h2 class="text-xl font-bold mb-4 text-center">{{ t('cgu.terms') }}</h2>
