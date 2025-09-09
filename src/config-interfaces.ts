@@ -52,4 +52,9 @@ export interface Config {
   logoutUrl: string
   //Use it if you want a different logout URL for external authentication providers
   logoutExternalUrl?: string
+  //CGU links
+  cgus: {
+    lang: { default: string; eng: string; fre: string }
+    excludedUrls: string[]
+  }
 }
