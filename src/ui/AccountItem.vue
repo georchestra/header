@@ -37,7 +37,7 @@ const props = defineProps<{
         </template>
       </button>
       <div
-        class="absolute right-0 flex flex-col w-max z-[1002] opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 pointer-events-none group-hover:pointer-events-auto"
+        class="absolute right-0 flex flex-col w-max z-[1002] opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-100 pointer-events-none group-hover:pointer-events-auto"
       >
         <div class="border rounded bg-white mt-3">
           <div
@@ -52,14 +52,14 @@ const props = defineProps<{
             </span>
           </div>
           <ul class="dropdown font-semibold">
-            <li class="px-4 transition-colors duration-150">
+            <li class="px-4 transition-colors duration-100">
               <a
                 class="first-letter:capitalize"
                 href="/console/account/userdetails"
                 >{{ t('account_details') }}
               </a>
             </li>
-            <li class="px-4 transition-colors duration-150">
+            <li class="px-4 transition-colors duration-100">
               <a class="first-letter:capitalize" :href="props.logoutUrl">{{
                 t('logout')
               }}</a>
