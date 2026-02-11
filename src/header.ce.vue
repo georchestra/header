@@ -50,7 +50,7 @@ function determineActiveApp(): void {
   let matched: boolean
   for (const link of allLinks) {
     matched = false
-    const activeAppUrlSplitted = link.split(':')
+    const activeAppUrlSplitted = link.activeAppUrl!.split(':')
     const base =
       activeAppUrlSplitted.length > 1 ? activeAppUrlSplitted[0] : 'start'
     const url = replaceUrlsVariables(
@@ -73,11 +73,11 @@ function determineActiveApp(): void {
         break
     }
     state.matchedRouteScore =
-      matched && link.length > state.matchedRouteScore
-        ? link.length
+      matched && link.activeAppUrl!.length > state.matchedRouteScore
+        ? link.activeAppUrl!.length
         : state.matchedRouteScore
-    if (matched && state.matchedRouteScore === link?.length) {
-      state.activeAppUrl = link
+    if (matched && state.matchedRouteScore === link?.activeAppUrl!.length) {
+      state.activeAppLink = link
     }
   }
 }

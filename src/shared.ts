@@ -24,7 +24,7 @@ export const state = reactive({
   lang3: 'eng',
   loaded: false,
   matchedRouteScore: 0,
-  activeAppUrl: '' as string | undefined,
+  activeAppLink: null as null | Link,
   activeDropdown: null as null | number,
 })
 
