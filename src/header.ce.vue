@@ -50,7 +50,7 @@ function determineActiveApp(): void {
   let matched: boolean
   for (const link of allLinks) {
     matched = false
-    const activeAppUrlSplitted = link.split(':')
+    const activeAppUrlSplitted = link.activeAppUrl!.split(':')
     const base =
       activeAppUrlSplitted.length > 1 ? activeAppUrlSplitted[0] : 'start'
     const url = replaceUrlsVariables(
@@ -73,11 +73,11 @@ function determineActiveApp(): void {
         break
     }
     state.matchedRouteScore =
-      matched && link.length > state.matchedRouteScore
-        ? link.length
+      matched && link.activeAppUrl!.length > state.matchedRouteScore
+        ? link.activeAppUrl!.length
         : state.matchedRouteScore
-    if (matched && state.matchedRouteScore === link?.length) {
-      state.activeAppUrl = link
+    if (matched && state.matchedRouteScore === link?.activeAppUrl!.length) {
+      state.activeAppLink = link
     }
   }
 }
@@ -203,7 +203,7 @@ onMounted(() => {
       </div>
 
       <div
-        class="absolute z-[1000] bg-white w-full duration-300 transition-opacity ease-in-out"
+        class="absolute z-[1000] bg-white w-full duration-100 transition-opacity ease-in-out"
       >
         <nav class="flex flex-col font-semibold" v-if="state.mobileMenuOpen">
           <Menu :items="navigation?.menus ?? []" />
@@ -244,7 +244,7 @@ onMounted(() => {
   }
 
   .nav-item:after {
-    @apply block content-[''] absolute h-[3px] bg-primary w-full scale-x-0  transition duration-300 origin-left;
+    @apply block content-[''] absolute h-[3px] bg-primary w-full scale-x-0  transition duration-100 origin-left;
   }
 
   .nav-item.active {
