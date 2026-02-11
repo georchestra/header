@@ -33,12 +33,12 @@ const props = defineProps<{
         {{ props.item.i18n ? t(props.item.i18n) : props.item.label }}</span
       >
       <ChevronDownIcon
-        class="w-4 h-4 transition-transform duration-200 group-hover:rotate-180"
+        class="w-4 h-4 transition-transform duration-100 group-hover:rotate-180"
         stroke-width="4"
       ></ChevronDownIcon>
     </button>
     <div
-      class="absolute flex flex-col min-w-full w-max z-[1002] opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-200 pointer-events-none group-hover:pointer-events-auto"
+      class="absolute flex flex-col min-w-full w-max z-[1002] opacity-0 -translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-100 pointer-events-none group-hover:pointer-events-auto"
     >
       <ul class="border rounded dropdown bg-white mt-3">
         <template
