@@ -26,3 +26,8 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+
+# mkdor
+*venv*
+*site/*
+*site*
