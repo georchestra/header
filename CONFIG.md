@@ -88,7 +88,7 @@ customClass: "custom-catalog-btn"
           "label": "WMS/WFS",
           "i18n": "customi18n",
           "url": "/geoserver/web",
-          "activeAppUrl": "includes:/geoserver",
+          "activeAppLink": "includes:/geoserver",
           "icon": "iconoir-map"
         }
       ],
@@ -101,14 +101,14 @@ customClass: "custom-catalog-btn"
               "label": "Console",
               "i18n": "users",
               "url": "/console/manager/home",
-              "activeAppUrl": "/console",
+              "activeAppLink": "/console",
               "icon": "iconoir-globe"
             },
             {
               "label": "Geonetwork",
               "i18n": "catalogue",
               "url": "/geonetwork/srv/:lang3/catalog.edit#/board",
-              "activeAppUrl": "/geonetwork",
+              "activeAppLink": "/geonetwork",
               "disabled": true
             }
           ]
@@ -116,7 +116,7 @@ customClass: "custom-catalog-btn"
         {
           "label": "Superset admin stuff",
           "url": "/superset",
-          "activeAppUrl": "/superset",
+          "activeAppLink": "/superset",
           "hasRole": "ROLE_SUPERUSER,ROLE_SUPERSET_*",
           "icon": "iconoir-graph-up"
         }
@@ -136,8 +136,8 @@ If two conditions can be resolved for a link to be active, the longest one will 
 
 URL of tab : /mapstore/#/home
 
-- Condition 1 : activeAppUrl /mapstore
-- Condition 2 : activeAppUrl /mapstore/#/home
+- Condition 1 : activeAppLink /mapstore
+- Condition 2 : activeAppLink /mapstore/#/home
 
 Condition 2 will be used because /mapstore/#/home = 16 characters.
 

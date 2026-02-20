@@ -73,7 +73,7 @@ Champs d'un lien :
 | `label` | string | Libelle visible. | Peut etre remplace par `i18n`. |
 | `url` | string | URL cible. | Requis pour les liens. |
 | `i18n` | string | Cle i18n pour le libelle. | Optionnel. |
-| `activeAppUrl` | string | Regle d'onglet actif. | Prefixes `start`, `exact`, `includes`, `end`. |
+| `activeAppLink` | string | Regle d'onglet actif. | Prefixes `start`, `exact`, `includes`, `end`. |
 | `icon` | string | Nom de classe d'icone. | Depend de `iconsUrl`. |
 | `disabled` | boolean | Desactive le clic. | Optionnel. |
 
@@ -129,7 +129,7 @@ Exemple :
           "label": "WMS/WFS",
           "i18n": "customi18n",
           "url": "/geoserver/web",
-          "activeAppUrl": "includes:/geoserver",
+          "activeAppLink": "includes:/geoserver",
           "icon": "iconoir-map"
         }
       ],
@@ -142,7 +142,7 @@ Exemple :
               "label": "Console",
               "i18n": "users",
               "url": "/console/manager/home",
-              "activeAppUrl": "/console",
+              "activeAppLink": "/console",
               "icon": "iconoir-globe"
             }
           ]
@@ -157,7 +157,7 @@ Legacy : `menu` est toujours accepte et mappe vers `navigation.menus[0]`.
 
 ## Matching de l'onglet actif
 
-Si plusieurs `activeAppUrl` correspondent, la condition la plus longue l'emporte.
+Si plusieurs `activeAppLink` correspondent, la condition la plus longue l'emporte.
 
 ## i18n
 
