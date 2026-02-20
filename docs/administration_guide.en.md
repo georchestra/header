@@ -73,7 +73,7 @@ Link fields:
 | `label` | string | Visible label. | Can be replaced by `i18n`. |
 | `url` | string | Target URL. | Required for links. |
 | `i18n` | string | i18n key for label. | Optional. |
-| `activeAppUrl` | string | Active tab matcher. | `start`, `exact`, `includes`, `end` prefixes supported. |
+| `activeAppLink` | string | Active tab matcher. | `start`, `exact`, `includes`, `end` prefixes supported. |
 | `icon` | string | Icon class name. | Depends on `iconsUrl`. |
 | `disabled` | boolean | Disable clicking. | Optional. |
 
@@ -127,7 +127,7 @@ Example:
           "label": "WMS/WFS",
           "i18n": "customi18n",
           "url": "/geoserver/web",
-          "activeAppUrl": "includes:/geoserver",
+          "activeAppLink": "includes:/geoserver",
           "icon": "iconoir-map"
         }
       ],
@@ -140,7 +140,7 @@ Example:
               "label": "Console",
               "i18n": "users",
               "url": "/console/manager/home",
-              "activeAppUrl": "/console",
+              "activeAppLink": "/console",
               "icon": "iconoir-globe"
             }
           ]
@@ -155,7 +155,7 @@ Legacy: `menu` is still accepted and maps to `navigation.menus[0]`.
 
 ## Active tab matching
 
-If multiple `activeAppUrl` patterns match, the longest match wins. This keeps the
+If multiple `activeAppLink` patterns match, the longest match wins. This keeps the
 active tab aligned with the current page.
 
 ## i18n
