@@ -142,58 +142,45 @@ onMounted(() => {
     ></iframe>
   </div>
   <header
-    v-else-if="state.loaded"
+    v-else
     class="host h-[80px] text-base"
     :class="{ 'has-custom-stylesheet': state.config.stylesheet }"
     :style="`height:${props.height}px`"
   >
-    <link
-      rel="stylesheet"
-      :href="state.config.stylesheet"
-      v-if="state.config.stylesheet"
-      :nonce="props.customNonce"
-    />
-    <link
-      rel="stylesheet"
-      :href="state.config.iconsUrl"
-      v-if="state.config.iconsUrl"
-      :nonce="props.customNonce"
-    />
-    <div
-      class="justify-between text-slate-600 lg:flex hidden h-full bg-white lg:text-sm"
-    >
-      <div class="flex header-left flex-1 min-w-0">
-        <Logo :logoUrl="props.logoUrl || state.config.logoUrl" />
-        <nav
-          :class="[
-            'flex items-center font-semibold header-nav grow',
-            navigation.class || 'justify-start',
-          ]"
-        >
-          <Menu :items="navigation?.menus ?? []" />
-
-          <span class="text-gray-400 text-xs" v-if="isWarned">
-            <a href="/console/account/changePassword">
-              {{ t('remaining_days_msg_part1') }} {{ remainingDays }}
-              {{ t('remaining_days_msg_part2') }}
-              {{ t('remaining_days_msg_part3') }}</a
-            ></span
-          >
-        </nav>
-      </div>
-      <AccountItem
-        :is-anonymous="isAnonymous"
-        :login-url="loginUrl"
-        :logout-url="logoutUrl"
+    <template v-if="state.loaded">
+      <link
+        rel="stylesheet"
+        :href="state.config.stylesheet"
+        v-if="state.config.stylesheet"
+        :nonce="props.customNonce"
       />
-    </div>
-    <div class="flex-col lg:hidden w-full h-full">
+      <link
+        rel="stylesheet"
+        :href="state.config.iconsUrl"
+        v-if="state.config.iconsUrl"
+        :nonce="props.customNonce"
+      />
       <div
-        class="h-full flex items-center justify-between px-4 py-1 shrink-0 w-full bg-primary/10"
+        class="justify-between text-slate-600 lg:flex hidden h-full bg-white lg:text-sm"
       >
-        <div class="h-full flex">
-          <BurgerIcon class="mr-3" />
+        <div class="flex header-left flex-1 min-w-0">
           <Logo :logoUrl="props.logoUrl || state.config.logoUrl" />
+          <nav
+            :class="[
+              'flex items-center font-semibold header-nav grow',
+              navigation.class || 'justify-start',
+            ]"
+          >
+            <Menu :items="navigation?.menus ?? []" />
+
+            <span class="text-gray-400 text-xs" v-if="isWarned">
+              <a href="/console/account/changePassword">
+                {{ t('remaining_days_msg_part1') }} {{ remainingDays }}
+                {{ t('remaining_days_msg_part2') }}
+                {{ t('remaining_days_msg_part3') }}</a
+              ></span
+            >
+          </nav>
         </div>
         <AccountItem
           :is-anonymous="isAnonymous"
@@ -201,15 +188,30 @@ onMounted(() => {
           :logout-url="logoutUrl"
         />
       </div>
+      <div class="flex-col lg:hidden w-full h-full">
+        <div
+          class="h-full flex items-center justify-between px-4 py-1 shrink-0 w-full bg-primary/10"
+        >
+          <div class="h-full flex">
+            <BurgerIcon class="mr-3" />
+            <Logo :logoUrl="props.logoUrl || state.config.logoUrl" />
+          </div>
+          <AccountItem
+            :is-anonymous="isAnonymous"
+            :login-url="loginUrl"
+            :logout-url="logoutUrl"
+          />
+        </div>
 
-      <div
-        class="absolute z-[1000] bg-white w-full duration-100 transition-opacity ease-in-out"
-      >
-        <nav class="flex flex-col font-semibold" v-if="state.mobileMenuOpen">
-          <Menu :items="navigation?.menus ?? []" />
-        </nav>
+        <div
+          class="absolute z-[1000] bg-white w-full duration-100 transition-opacity ease-in-out"
+        >
+          <nav class="flex flex-col font-semibold" v-if="state.mobileMenuOpen">
+            <Menu :items="navigation?.menus ?? []" />
+          </nav>
+        </div>
       </div>
-    </div>
+    </template>
   </header>
 </template>
 
@@ -217,6 +219,10 @@ onMounted(() => {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:host {
+  display: block;
+}
 
 .host {
   -webkit-text-size-adjust: 100%;
