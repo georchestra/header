@@ -1,7 +1,8 @@
-site_name: Template pour la documentation d'un composant geOrchestra
+site_name: Header
 
-repo_url: https://github.com/georchestra/georchestra_documentation_template
-repo_name: georchestra-documentation
+site_url: https://docs.georchestra.org/header/en/latest/
+repo_url: https://github.com/georchestra/header
+repo_name: georchestra-header
 
 docs_dir: docs
 edit_uri: edit/main/docs/
@@ -38,7 +39,7 @@ extra:
       link: https://matrix.to/#/#georchestra:osgeo.org
 
 
-copyright: '© 2025 - geOrchestra'
+copyright: '© 2026 - geOrchestra'
 
 extra_css:
     - css/extra.css
@@ -90,11 +91,11 @@ plugins:
             default: true
             name: English
             build: true
-            site_name: "Documentation template for a geOrchestra component"
+            site_name: "Header"
           - locale: fr
             name: Français
             build: true
-            site_name: "Template pour la documentation d'un composant geOrchestra"
+            site_name: "Header"
             nav_translations:
               Overview: "Présentation"
               Technical guide: "Guide technique"
